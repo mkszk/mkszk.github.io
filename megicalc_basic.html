@@ -1,0 +1,261 @@
+<!doctype html> 
+<html>
+  <head>
+    <title>メギド72通常ダメージ計算</title>
+    <meta name="author" content="mkszk" />
+    <meta name="keywords" content="メギド72, megido72" />
+    <meta name="description" content="メギド72通常ダメージ計算" />
+    <meta name="robots" content="all" />
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h1>メギド72通常ダメージ計算</h1>
+    <p>
+      使い方
+      <ol>
+        <li>各欄に数値を入力</li>
+      </ol>
+      するとメギド72攻略wiki様を参考にした通常ダメージ値を計算します。<br />
+      数値を入力した状態でブックマークすると
+      数値をブックマークに保存できます。
+    </p>
+    <table>
+      <tr>
+        <td>レベル</td>
+        <td><input type="text" class="WATCH" id="LEVEL" /></td>
+      </tr>
+      <tr>
+        <td>攻撃力</td>
+        <td><input type="text" class="WATCH" id="ATTACK" /></td>
+      </tr>
+      <tr>
+        <td>技倍率</td>
+        <td><input type="text" class="WATCH" id="MULTI" /></td>
+      </tr>
+      <tr>
+        <td>ヒット数</td>
+        <td><input type="text" class="WATCH" id="HITS" /></td>
+      </tr>
+      <tr>
+        <td>攻撃力バフ</td>
+        <td><input type="text" class="WATCH" id="ATTACK_BUFF_1" />%</td>
+        <td><input type="text" class="WATCH" id="ATTACK_BUFF_2" />%</td>
+        <td><input type="text" class="WATCH" id="ATTACK_BUFF_3" />%</td>
+        <td><input type="text" class="WATCH" id="ATTACK_BUFF_4" />%</td>
+        <td><input type="text" class="WATCH" id="ATTACK_BUFF_5" />%</td>
+      </tr>
+      <tr>
+        <td>攻撃力デバフ</td>
+        <td><input type="text" class="WATCH" id="ATTACK_DEBUFF_1" />%</td>
+        <td><input type="text" class="WATCH" id="ATTACK_DEBUFF_2" />%</td>
+        <td><input type="text" class="WATCH" id="ATTACK_DEBUFF_3" />%</td>
+        <td><input type="text" class="WATCH" id="ATTACK_DEBUFF_4" />%</td>
+        <td><input type="text" class="WATCH" id="ATTACK_DEBUFF_5" />%</td>
+      </tr>
+      <tr>
+        <td>敵防御力</td>
+        <td><input type="text" class="WATCH" id="DEFENCE" /></td>
+      </tr>
+      <tr>
+        <td>敵防御力バフ</td>
+        <td><input type="text" class="WATCH" id="DEFENCE_BUFF_1" />%</td>
+        <td><input type="text" class="WATCH" id="DEFENCE_BUFF_2" />%</td>
+        <td><input type="text" class="WATCH" id="DEFENCE_BUFF_3" />%</td>
+        <td><input type="text" class="WATCH" id="DEFENCE_BUFF_4" />%</td>
+        <td><input type="text" class="WATCH" id="DEFENCE_BUFF_5" />%</td>
+      </tr>
+      <tr>
+        <td>敵防御力デバフ</td>
+        <td><input type="text" class="WATCH" id="DEFENCE_DEBUFF_1" />%</td>
+        <td><input type="text" class="WATCH" id="DEFENCE_DEBUFF_2" />%</td>
+        <td><input type="text" class="WATCH" id="DEFENCE_DEBUFF_3" />%</td>
+        <td><input type="text" class="WATCH" id="DEFENCE_DEBUFF_4" />%</td>
+        <td><input type="text" class="WATCH" id="DEFENCE_DEBUFF_5" />%</td>
+      </tr>
+      <tr>
+        <td>フォトン強化</td>
+        <td><input type="text" class="WATCH" id="PHOTON" /></td>
+      </tr>
+      <tr>
+        <td>クラス補正</td>
+        <td><input type="text" class="WATCH" id="CLASS" /></td>
+      </tr>
+      <tr>
+        <td>種族特効</td>
+        <td><input type="text" class="WATCH" id="BOOST_1_1" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_1_2" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_1_3" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_1_4" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_1_5" />%</td>
+      </tr>
+      <tr>
+        <td>状態異常特効</td>
+        <td><input type="text" class="WATCH" id="BOOST_2_1" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_2_2" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_2_3" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_2_4" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_2_5" />%</td>
+      </tr>
+      <tr>
+        <td>性別特効</td>
+        <td><input type="text" class="WATCH" id="BOOST_3_1" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_3_2" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_3_3" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_3_4" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_3_5" />%</td>
+      </tr>
+      <tr>
+        <td>覚醒特効</td>
+        <td><input type="text" class="WATCH" id="BOOST_4_1" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_4_2" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_4_3" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_4_4" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_4_5" />%</td>
+      </tr>
+      <tr>
+        <td>Hボム特効</td>
+        <td><input type="text" class="WATCH" id="BOOST_5_1" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_5_2" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_5_3" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_5_4" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_5_5" />%</td>
+      </tr>
+      <tr>
+        <td>属性補正</td>
+        <td><input type="text" class="WATCH" id="BOOST_6_1" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_6_2" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_6_3" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_6_4" />%</td>
+        <td><input type="text" class="WATCH" id="BOOST_6_5" />%</td>
+      </tr>
+      <tr>
+        <td>凍結補正</td>
+        <td><input type="text" class="WATCH" id="BOOST_7" />%</td>
+      </tr>
+      <tr>
+        <td>ダメージ軽減</td>
+        <td><input type="text" class="WATCH" id="REDUCE_1" />%</td>
+        <td><input type="text" class="WATCH" id="REDUCE_2" />%</td>
+        <td><input type="text" class="WATCH" id="REDUCE_3" />%</td>
+        <td><input type="text" class="WATCH" id="REDUCE_4" />%</td>
+        <td><input type="text" class="WATCH" id="REDUCE_5" />%</td>
+      </tr>
+      <tr>
+        <td>固定ダメージ</td>
+        <td><input type="text" class="WATCH" id="FIX_DAMAGE" /></td>
+      </tr>
+      <tr>
+        <td>点穴</td>
+        <td><input type="text" class="WATCH" id="TENKETSU" /></td>
+      </tr>
+      <tr>
+        <td>1 Hitあたりのダメージ</td>
+        <td><input type="text" id="DAMAGE_1_HIT_MIN" disabled/>～</td>
+        <td><input type="text" id="DAMAGE_1_HIT_MAX" disabled/></td>
+      </tr>
+      <tr>
+        <td>合計ダメージ</td>
+        <td><input type="text" id="DAMAGE_TOTAL_MIN" disabled/>～</td>
+        <td><input type="text" id="DAMAGE_TOTAL_MAX" disabled/></td>
+      </tr>
+      <tr>
+        <td>ブロック側HP</td>
+        <td><input type="text" class="WATCH" id="BLOCK_HP" /></td>
+      </tr>
+      <tr>
+        <td>ブロック割合</td>
+        <td><input type="text" class="WATCH" id="BLOCK_RATE" />%</td>
+      </tr>
+      <tr>
+        <td>ブロック可否</td>
+        <td><input type="text" id="BLOCK_MIN" disabled/>～</td>
+        <td><input type="text" id="BLOCK_MAX" disabled/></td>
+      </tr>
+    </table>
+  <script type="text/javascript" src="js/megicalc_basic.js" charset="UTF-8"></script>
+  <script type="text/javascript">
+    var DATA = {
+      "LEVEL":70,
+      "ATTACK":2468,
+      "MULTI":2,
+      "HITS":2,
+      "ATTACK_BUFF_1":0,
+      "ATTACK_BUFF_2":0,
+      "ATTACK_BUFF_3":0,
+      "ATTACK_BUFF_4":0,
+      "ATTACK_BUFF_5":0,
+      "ATTACK_DEBUFF_1":0,
+      "ATTACK_DEBUFF_2":0,
+      "ATTACK_DEBUFF_3":0,
+      "ATTACK_DEBUFF_4":0,
+      "ATTACK_DEBUFF_5":0,
+      "DEFENCE":471,
+      "DEFENCE_BUFF_1":0,
+      "DEFENCE_BUFF_2":0,
+      "DEFENCE_BUFF_3":0,
+      "DEFENCE_BUFF_4":0,
+      "DEFENCE_BUFF_5":0,
+      "DEFENCE_DEBUFF_1":0,
+      "DEFENCE_DEBUFF_2":0,
+      "DEFENCE_DEBUFF_3":0,
+      "DEFENCE_DEBUFF_4":0,
+      "DEFENCE_DEBUFF_5":0,
+      "PHOTON":1,
+      "CLASS":1.25,
+      "BOOST_1_1":0,
+      "BOOST_1_2":0,
+      "BOOST_1_3":0,
+      "BOOST_1_4":0,
+      "BOOST_1_5":0,
+      "BOOST_2_1":0,
+      "BOOST_2_2":0,
+      "BOOST_2_3":0,
+      "BOOST_2_4":0,
+      "BOOST_2_5":0,
+      "BOOST_3_1":0,
+      "BOOST_3_2":0,
+      "BOOST_3_3":0,
+      "BOOST_3_4":0,
+      "BOOST_3_5":0,
+      "BOOST_4_1":0,
+      "BOOST_4_2":0,
+      "BOOST_4_3":0,
+      "BOOST_4_4":0,
+      "BOOST_4_5":0,
+      "BOOST_5_1":0,
+      "BOOST_5_2":0,
+      "BOOST_5_3":0,
+      "BOOST_5_4":0,
+      "BOOST_5_5":0,
+      "BOOST_6_1":0,
+      "BOOST_6_2":0,
+      "BOOST_6_3":0,
+      "BOOST_6_4":0,
+      "BOOST_6_5":0,
+      "BOOST_7":0,
+      "REDUCE_1":33,
+      "REDUCE_2":33,
+      "REDUCE_3":26,
+      "REDUCE_4":10,
+      "REDUCE_5":0,
+      "FIX_DAMAGE":0,
+      "TENKETSU":0,
+      "BLOCK_HP":8805,
+      "BLOCK_RATE":20,
+    };
+    
+    hash_to_data(DATA);
+    data_to_html(DATA);
+    calculate(DATA);
+    
+    //------------------------------------------
+    // register Listener to save data
+    document.querySelectorAll('.WATCH').forEach((item) => {
+      item.addEventListener('change', (event) => {
+        html_to_data(DATA);
+        data_to_hash(DATA);
+        calculate(DATA);
+      });
+    });
+  </script>
+</html>
