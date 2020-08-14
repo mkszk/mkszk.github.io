@@ -1,0 +1,99 @@
+<!doctype html> 
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <h1>メギド72クリア編成報告サーチ</h1>
+    <p>
+      使い方
+      <ol>
+        <li>所持メギドをチェック</li>
+        <li>ステージを入力(1～78の数字、または、大幻獣の名前)</li>
+        <li>難易度を入力(N, H, VH, EX)</li>
+        <li>検索を押す</li>
+      </ol>
+      するとマッチするクリア編成報告が表示されます。<br />
+      また、所持メギドにチェックを入れた状態でブックマークすると
+      チェック状態をブックマークに保存できます。
+    </p>
+    <table>
+      <tr>
+        <td>ステージ</td>
+        <td><input type="text" class="WATCH" id="STAGE" />
+        <td>難易度</td>
+        <td><input type="text" class="WATCH" id="DIFFICULTY" />
+        <td><input type="button" id="SEARCH" value="検索" />
+        <td><input type="button" id="DELETE" value="消去" />
+      </tr>
+    </table>
+    <table>
+      <tbody id="RESULT" />
+    </table>
+    <table>
+      <tbody id="NAMELIST">
+        <tr>
+          <th>名前</th>
+          <th>所持</th>
+          <th>名前</th>
+          <th>所持</th>
+          <th>名前</th>
+          <th>所持</th>
+          <th>名前</th>
+          <th>所持</th>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+  <script type="text/javascript" src="js/NAMELIST.js" charset="UTF-8"></script>
+  <script type="text/javascript" src="js/DATABASE.js" charset="UTF-8"></script>
+  <script type="text/javascript" src="js/locationhash.js" charset="UTF-8"></script>
+  <script type="text/javascript" src="js/megisearch.js" charset="UTF-8"></script>
+  <script type="text/javascript">
+    //------------------------------------------
+    // create NAMELIST
+    (function() {
+      var addHTML = "";
+      for (var i=0; i<72; ++i) {
+        addHTML += "<tr>";
+        for (var j=0; j<4; ++j) {
+          addHTML += "<td>"+NAMELIST[i+j*72]+"</td>";
+          addHTML += "<td><input type='checkbox' class='CHECK WATCH' value='"+(i+j*72)+"' /></td>";
+        }
+        addHTML += "</tr>";
+      }
+      document.querySelector("#NAMELIST").innerHTML += addHTML;
+    })();
+    
+    //------------------------------------------
+    // load data from location.hash
+    var DATA = {
+      "STAGE":"48",
+      "DIFFICULTY":"VH",
+      "CHECK":Array(72*4).fill(0),
+    };
+    hash_to_data(DATA);
+    data_to_html(DATA);
+    
+    //------------------------------------------
+    // register Listener to save data
+    document.querySelectorAll('.WATCH').forEach((item) => {
+      item.addEventListener('change', (event) => {
+        html_to_data(DATA);
+        data_to_hash(DATA);
+      });
+    });
+    
+    //------------------------------------------
+    // register Listener to search
+    document.querySelector('#SEARCH').addEventListener('click', (event) => {
+      megisearch(DATA, NAMELIST, DATABASE);
+    });
+    
+    //------------------------------------------
+    // register Listener to delete
+    document.querySelector('#DELETE').addEventListener('click', (event) => {
+      document.querySelector("#RESULT").innerHTML = "";
+    });
+  </script>
+</html>
