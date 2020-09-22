@@ -67,7 +67,11 @@
         addHTML += "<tr>";
         for (var j=0; j<4; ++j) {
           addHTML += "<td>"+NAMELIST[i+j*72]+"</td>";
-          addHTML += "<td><input type='checkbox' class='CHECK WATCH' value='"+(i+j*72)+"' /></td>";
+          if (NAMELIST[i+j*72] === "未実装") {
+            addHTML += "<td><input type='checkbox' class='CHECK WATCH' value='"+(i+j*72)+"' disabled/></td>";
+          } else {
+            addHTML += "<td><input type='checkbox' class='CHECK WATCH' value='"+(i+j*72)+"' /></td>";
+          }
         }
         addHTML += "</tr>";
       }
