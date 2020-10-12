@@ -14,7 +14,7 @@ function html_to_data(data) {
    data.STAGE = document.querySelector("#STAGE").value;
    data.DIFFICULTY = document.querySelector("#DIFFICULTY").value;
    document.querySelectorAll(".CHECK").forEach((item) => {
-     if (item.checked) {
+     if (item.checked && !item.disabled) {
        data.CHECK[parseInt(item.value)] = 1;
      } else {
        data.CHECK[parseInt(item.value)] = 0;
