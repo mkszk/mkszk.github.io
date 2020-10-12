@@ -4,6 +4,8 @@ function data_to_html(data) {
    document.querySelectorAll(".CHECK").forEach((item) => {
      if (data.CHECK[parseInt(item.value)]) {
        item.checked = true;
+     } else {
+       item.checked = false;
      }
    });
 }
