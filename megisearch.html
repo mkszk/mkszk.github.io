@@ -72,9 +72,9 @@
         for (var j=0; j<4; ++j) {
           addHTML += "<td>"+NAMELIST[i+j*72]+"</td>";
           if (NAMELIST[i+j*72] === "未実装") {
-            addHTML += "<td><input type='checkbox' class='CHECK WATCH' value='"+(i+j*72)+"' disabled/></td>";
+            addHTML += "<td><input type='checkbox' class='CHECK WATCH' value='"+(i+j*72)+"' disabled /></td>";
           } else {
-            addHTML += "<td><input type='checkbox' class='CHECK WATCH' value='"+(i+j*72)+"' checked/></td>";
+            addHTML += "<td><input type='checkbox' class='CHECK WATCH' value='"+(i+j*72)+"' checked /></td>";
           }
         }
         addHTML += "</tr>";
@@ -87,7 +87,7 @@
     var DATA = {
       "STAGE":"48",
       "DIFFICULTY":"VH",
-      "CHECK":Array(72*4).fill(0),
+      "CHECK":Array(72*4).fill(1),
     };
     hash_to_data(DATA);
     data_to_html(DATA);
