@@ -14,8 +14,12 @@
       使い方
       <ol>
         <li>所持メギドをチェック</li>
-        <li>ステージを入力(1～78の数字、または、大幻獣の名前)</li>
-        <li>難易度を入力(N, H, VH, EX)</li>
+        <li>ステージ名を入力</li>
+        <ul>
+          <li>通常ステージは1～78の数字</li>
+          <li>星間の禁域は大幻獣・ボス幻獣の名前、または、毒と煉獄の試練</li>
+        </ul>
+        <li>難易度を入力(N, H, VH, EX, 心深圏)</li>
         <li>検索を押す</li>
       </ol>
       するとメギド72攻略wiki様のマッチするクリア編成報告へのリンクが表示されます。<br />
@@ -70,7 +74,7 @@
           if (NAMELIST[i+j*72] === "未実装") {
             addHTML += "<td><input type='checkbox' class='CHECK WATCH' value='"+(i+j*72)+"' disabled/></td>";
           } else {
-            addHTML += "<td><input type='checkbox' class='CHECK WATCH' value='"+(i+j*72)+"' /></td>";
+            addHTML += "<td><input type='checkbox' class='CHECK WATCH' value='"+(i+j*72)+"' checked/></td>";
           }
         }
         addHTML += "</tr>";
