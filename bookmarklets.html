@@ -1,0 +1,33 @@
+<!doctype html> 
+<html> 
+  <body> 
+    <h1 id="ignoreRT">TweetDeckのRT1k以上非表示ブックマークレット</h1>
+    <pre>
+javascript:(
+  setInterval(function() {
+    Array.prototype.forEach.call(document.getElementsByTagName('article'), function(article){
+      Array.prototype.forEach.call(article.getElementsByClassName('retweet-count'), function(retweet){
+        if (retweet.textContent.match(/[a-zA-Z]$/)) {
+          article.setAttribute('hidden',true);
+        }
+      });
+    });
+  }, 1000)
+)
+</pre>
+    <h1 id="amazon2honto">Amazonの書籍ページからhontoの同書籍ページに飛ぶブックマークレット</h1>
+    <pre>
+javascript:(
+  function(){
+    var result = this.location.pathname.match(/\/dp\/([0-9X]+)/);
+    if (result) {
+      var base = &quot;978&quot;+result[1].substring(0,9);
+      this.location = &quot;http://honto.jp/redirect.html?bookno=&quot;+base;
+    } else {
+      alert(&quot;ISBN NG&quot;);
+    }
+  }()
+)
+    </pre>
+  </body> 
+</html>
