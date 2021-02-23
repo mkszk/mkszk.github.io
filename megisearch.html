@@ -46,6 +46,10 @@
     <table>
       <tbody id="NAMELIST">
         <tr>
+          <td><input type="button" value="全選択" id="ALL_ON" /></td>
+          <td><input type="button" value="全解除" id="ALL_OFF" /></td>
+        </tr>
+        <tr>
           <th>名前</th>
           <th>所持</th>
           <th>名前</th>
@@ -111,6 +115,20 @@
     // register Listener to delete
     document.querySelector('#DELETE').addEventListener('click', (event) => {
       document.querySelector("#RESULT").innerHTML = "";
+    });
+    
+    //------------------------------------------
+    document.querySelector('#ALL_ON').addEventListener('click', (event) => {
+      DATA.CHECK.fill(1);
+      data_to_html(DATA);
+      data_to_hash(DATA);
+    });
+    
+    //------------------------------------------
+    document.querySelector('#ALL_OFF').addEventListener('click', (event) => {
+      DATA.CHECK.fill(0);
+      data_to_html(DATA);
+      data_to_hash(DATA);
     });
   </script>
 </html>
