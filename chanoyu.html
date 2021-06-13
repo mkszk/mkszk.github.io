@@ -8,18 +8,15 @@
     <script>
       var score = 0;
       function init() {
-        for (var c of document.cookie.split(";")) {
-          var cArray = c.split('=');
-          if( cArray[0] === " score" ){
-            score = parseInt(cArray[1]);
-            document.querySelector("#score").value = score.toString();
-          }
+        if ("score" in localStorage) {
+          score = parseInt(localStorage.score);
+          document.querySelector("#score").value = score.toString();
         }
       }
       function update(inc) {
         score += inc;
         document.querySelector("#score").value = score;
-        document.cookie = "score="+score.toString();
+        localStorage.score = score.toString();
       }
     </script>
   </head>
@@ -38,7 +35,7 @@
       </div>
     </form>
     <p>
-      スコアはcookieに保存しているだけでサーバーには何も保存していないので安心して使える。
+      スコアはlocalstorageに保存しているだけでサーバーには何も保存していないので安心して使える。
       心配ならソースコードも公開しているので自分のサーバーで動かそう。
       https://github.com/mkszk/mkszk.github.io/blob/master/chanoyu.html
     </p>
