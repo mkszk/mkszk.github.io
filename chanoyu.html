@@ -7,13 +7,53 @@
     <meta charset="UTF-8" />
     <script>
       var score = 0;
+      var quests = [
+        {
+          label:"Twitterでよく見る人をフォローした",
+          allot:20
+        }
+      ];
       function init() {
         if ("score" in localStorage) {
-          score = parseInt(localStorage.score);
-          document.querySelector("#score").value = score.toString();
+          var temp = parseInt(localStorage.score);
+          if (! isNaN(temp)) {
+            score = temp;
+            document.querySelector("#score").value = score.toString();
+          }
+        }
+        if ("quests" in localStorage) {
+          quests = JSON.parse(localStorage.quests);
+          for (var i=0; i<quests.length; i++) {
+             enable_quest(quests[i]);
+          }
         }
       }
-      function update(inc) {
+      function reset_quests() {
+        quests = [];
+        localStorage.quests = JSON.stringify(quests);
+        document.querySelector("#quest").innerHTML = "";
+      }
+      function enable_quest(q) {
+        var div = document.querySelector("#quest");
+        html = '<div><input type="button" value="LABEL(ALLOT点)" onclick="increment_score(ALLOT);"/></div>';
+        div.innerHTML += html.replaceAll("LABEL",q.label).replaceAll("ALLOT",q.allot);
+      }
+      function register_quest() {
+        var label = document.querySelector("#label").value;
+        var allot = parseInt(document.querySelector("#allot").value);
+        if (label !== "" && !isNaN(allot)) {
+          var q = {label:label, allot:allot};
+          enable_quest(q);
+          quests.push(q);
+          localStorage.quests = JSON.stringify(quests);
+        }
+      }
+      function reset_score() {
+        score = 0;
+        document.querySelector("#score").value = score;
+        localStorage.score = score.toString();
+      }
+      function increment_score(inc) {
         score += inc;
         document.querySelector("#score").value = score;
         localStorage.score = score.toString();
@@ -22,28 +62,60 @@
   </head>
   <body onload="init()"> 
     <h1>茶の湯カウンター</h1>
+    <p>
+      茶の湯カウンターは茶の湯ポイントを記録するWebアプリです。
+    </p>
+    <dl>
+      <dt>機能１：ポイントを記録する</dt>
+      <dd>
+        達成した茶の湯クエストを押すと茶の湯ポイントが増えます。
+        茶の湯ポイントはブラウザのlocalStorageに記録しており、
+        ブラウザを閉じたときの茶の湯ポイントは
+        再び開いたときに復元されます。
+      </dd>
+      <dt>機能２：クエストを登録する</dt>
+      <dd>
+        自分用の茶の湯クエストを登録できます。
+        クエスト名と配点を入力して登録ボタンを押してください。
+        茶の湯クエストもブラウザのlocalStorageに記録しており、
+        ブラウザを閉じたときの茶の湯ポイントは
+        再び開いたときに復元されます。
+      </dd>
+    </dl>
+    <h2>茶の湯ポイント</h2>
     <form>
       <div>
-        <label>スコア</label>
+        <label>合計点</label>
         <input id="score" type="text" name="score" value="0" readonly />
       </div>
-      <div>
-        <input type="button" value="24時前に寝た(10点)" onclick="update(10);"/>
+      <div id="quest">
       </div>
       <div>
-        <input type="button" value="Twitterでよく見る人をフォローした(20点)" onclick="update(20);"/>
+        <input type="button" value="茶の湯ポイントをリセット" onclick="reset_score();"/>
       </div>
+    </form>
+    <h2>茶の湯クエストを登録</h2>
+    <form>
       <div>
-        <input type="button" value="オフラインで目を合わせて喋った(30点)" onclick="update(30);"/>
+        <label>クエスト名</label>
+        <input id="label" type="text" name="label" value="" /><br/>
+        <label>配点</label>
+        <input id="allot" type="text" name="allot" value="10" /><br/>
+        <input type="button" value="茶の湯クエストを登録" onclick="register_quest();"/>
       </div>
+    </form>
+    <h2>茶の湯クエストをリセット</h2>
+    <form>
       <div>
-        <input type="button" value="クリア" onclick="localStorage.clear();"/>
+        <input type="button" value="茶の湯クエストをリセット" onclick="reset_quests();"/>
       </div>
     </form>
     <p>
-      スコアはlocalstorageに保存しているだけでサーバーには何も保存していないので安心して使える。
-      心配ならソースコードも公開しているので自分のサーバーで動かそう。
-      https://github.com/mkszk/mkszk.github.io/blob/master/chanoyu.html
+      サーバーには何も保存していないので安心して使ってください。
+      心配ならソースコードも公開しているので自分のサーバーで動かしましょう。
+      <a href="https://github.com/mkszk/mkszk.github.io/blob/master/chanoyu.html">
+        https://github.com/mkszk/mkszk.github.io/blob/master/chanoyu.html
+      </a>
     </p>
   </body> 
 </html>
