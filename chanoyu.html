@@ -38,8 +38,19 @@
         html = '<div><input type="button" value="LABEL(ALLOT点)" onclick="increment_score(ALLOT);"/></div>';
         div.innerHTML += html.replaceAll("LABEL",q.label).replaceAll("ALLOT",q.allot);
       }
+      function escape_hankaku_to_zenkaku(st) {
+        /*
+         * 「!」U+0021から「~」U+007Eを
+         * 「！」U+FF01から「～」U+FF5Eに変換する。
+         */
+        return st.replace(/[!-~]/g,
+          function( tmpStr ) {
+            return String.fromCharCode( tmpStr.charCodeAt(0) + 0xFEE0 );
+          }
+        );
+      }
       function register_quest() {
-        var label = document.querySelector("#label").value;
+        var label = escape_hankaku_to_zenkaku(document.querySelector("#label").value);
         var allot = parseInt(document.querySelector("#allot").value);
         if (label !== "" && !isNaN(allot)) {
           var q = {label:label, allot:allot};
