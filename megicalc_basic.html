@@ -25,6 +25,14 @@
     </p>
     <table>
       <tr>
+        <td>コロッセオ単体ダメージ上昇</td>
+        <td><input type="text" class="WATCH" id="COLOSSEO_DAMAGE_BUFF" /></td>
+      </tr>
+      <tr>
+        <td>コロッセオ防御力低下</td>
+        <td><input type="text" class="WATCH" id="COLOSSEO_DEFENCE_DEBUFF" /></td>
+      </tr>
+      <tr>
         <td>レベル</td>
         <td><input type="text" class="WATCH" id="LEVEL" /></td>
       </tr>
@@ -179,6 +187,8 @@
   <script type="text/javascript" src="js/megicalc_basic.js" charset="UTF-8"></script>
   <script type="text/javascript">
     var DATA = {
+      "COLOSSEO_DAMAGE_BUFF":0,
+      "COLOSSEO_DEFENCE_DEBUFF":0,
       "LEVEL":70,
       "ATTACK":2468,
       "MULTI":2,

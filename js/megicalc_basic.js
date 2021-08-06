@@ -1,4 +1,6 @@
 function data_to_html(data) {
+  document.querySelector("#COLOSSEO_DAMAGE_BUFF").value = data.COLOSSEO_DAMAGE_BUFF.toString();
+  document.querySelector("#COLOSSEO_DEFENCE_DEBUFF").value = data.COLOSSEO_DEFENCE_DEBUFF.toString();
   document.querySelector("#LEVEL").value = data.LEVEL.toString();
   document.querySelector("#ATTACK").value = data.ATTACK.toString();
   document.querySelector("#MULTI").value = data.MULTI.toString();
@@ -69,6 +71,8 @@ function data_to_html(data) {
 }
 
 function html_to_data(data) {
+  data.COLOSSEO_DAMAGE_BUFF = parseInt(document.querySelector("#COLOSSEO_DAMAGE_BUFF").value);
+  data.COLOSSEO_DEFENCE_DEBUFF = parseInt(document.querySelector("#COLOSSEO_DEFENCE_DEBUFF").value);
   data.LEVEL = parseInt(document.querySelector("#LEVEL").value);
   data.ATTACK = parseInt(document.querySelector("#ATTACK").value);
   data.MULTI = parseFloat(document.querySelector("#MULTI").value);
@@ -168,7 +172,7 @@ function calculate(data) {
     + data.DEFENCE_DEBUFF_3/100
     + data.DEFENCE_DEBUFF_4/100
     + data.DEFENCE_DEBUFF_5/100);
-  var defence_temp = data.DEFENCE * (1+defence_buff) * (1-defence_debuff)
+  var defence_temp = data.DEFENCE * (1+defence_buff) * (1-defence_debuff) * (1-data.COLOSSEO_DEFENCE_DEBUFF/100);
   if (defence_temp <= 0) {
     defence_temp = 0;
   }
@@ -233,7 +237,8 @@ function calculate(data) {
     * (1+boost_5)
     * (1+boost_6)
     * (1+boost_7)
-    * (1-reduce_temp));
+    * (1-reduce_temp)
+    * (1+data.COLOSSEO_DAMAGE_BUFF/100));
   
   if (damage_base * 0.95 < 1) {
     var damage_min = 1;
