@@ -205,7 +205,8 @@ function calculate(data) {
     + data.BOOST_3_2/100
     + data.BOOST_3_3/100
     + data.BOOST_3_4/100
-    + data.BOOST_3_5/100);
+    + data.BOOST_3_5/100
+    + data.COLOSSEO_DAMAGE_BUFF/100);
   var boost_4 = (
       data.BOOST_4_1/100
     + data.BOOST_4_2/100
@@ -237,8 +238,7 @@ function calculate(data) {
     * (1+boost_5)
     * (1+boost_6)
     * (1+boost_7)
-    * (1-reduce_temp)
-    * (1+data.COLOSSEO_DAMAGE_BUFF/100));
+    * (1-reduce_temp);
   
   if (damage_base * 0.95 < 1) {
     var damage_min = 1;
