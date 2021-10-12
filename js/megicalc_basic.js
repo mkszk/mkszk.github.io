@@ -238,7 +238,7 @@ function calculate(data) {
     * (1+boost_5)
     * (1+boost_6)
     * (1+boost_7)
-    * (1-reduce_temp);
+    * (1-reduce_temp));
   
   if (damage_base * 0.95 < 1) {
     var damage_min = 1;
