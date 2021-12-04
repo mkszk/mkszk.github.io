@@ -1,6 +1,6 @@
 function megisearch(data, namelist, database) {
   for (var i=0; i<database.length; ++i) {
-    if (data.STAGE === database[i][1]) {
+    if (data.STAGE === database[i][1] || data.STAGE === "*") {
       database[i][0] = {
         "SCORE":45,
         "CHECK":[0,0,0,0,0]
