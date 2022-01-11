@@ -1,0 +1,163 @@
+<!doctype html> 
+<html>
+  <head>
+    <title>メギド72バトルルール生成</title>
+    <meta name="author" content="mkszk" />
+    <meta name="keywords" content="メギド72, megido72" />
+    <meta name="description" content="メギド72バトルルール生成" />
+    <meta name="robots" content="all" />
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h1>メギド72バトルルール生成</h1>
+    <p>
+      使い方
+    </p>
+    <ol>
+      <li>バトルルール種別を選択してください</li>
+      <li>抽選ボタンを押してください</li>
+      <li>バトルルール1～3の欄は抽選ボタンを押すと自動で決定されます、手動では変更できません</li>
+      <li>結果URL欄をコピーして共有してください</li>
+    </ol>
+    <ul>
+      連絡先：https://twitter.com/m_k_szk<br/>
+      ソースコード：https://github.com/mkszk/mkszk.github.io
+    </ul>
+    <table>
+      <tr>
+         <td>バトルルール種別</td>
+         <td>
+           <input type="radio" name="base" value="始まりの禁盤" >始まりの禁盤
+           <input type="radio" name="base" value="濫業・荒滅・凶帯の禁盤" > 濫業・荒滅・凶帯の禁盤
+           <input type="radio" name="base" value="幻糸の禁盤" > 幻糸の禁盤
+         </td>
+      </tr>
+      <tr>
+        <td><input type="button" id="RANDOM" value="抽選" /></td>
+      </tr>
+      <tr>
+         <td>バトルルール1</td>
+         <td><input type="text" class="WATCH" id="RULE1" size="50" readonly /></td>
+      </tr>
+      <tr>
+         <td>バトルルール2</td>
+         <td><input type="text" class="WATCH" id="RULE2" size="50" readonly /></td>
+      </tr>
+      <tr>
+         <td>バトルルール3</td>
+         <td><input type="text" class="WATCH" id="RULE3" size="50" readonly /></td>
+      </tr>
+      <tr>
+         <td>結果URL</td>
+        <td><input type="text" id="RESULT" value="" size="50" readonly /></td>
+      </tr>
+    </table>
+  <script type="text/javascript" src="js/odai.js" charset="UTF-8"></script>
+  <script type="text/javascript">
+    var DATA = {
+      "BASE":"始まりの禁盤",
+      "RULE1":"",
+      "RULE2":"",
+      "RULE3":"",
+    };
+    var RULEBASE = {
+      "始まりの禁盤":[
+        ["バトルに勝利する"],
+        [
+        "全員生存でクリア",
+        "合計被ダメージ10000以下でクリア",
+        "10ターン以下でクリア",
+        "パーティの平均HP60%以上でクリア",
+        ],
+        [
+        "ラッシュを2体以上編成してクリア",
+        "カウンターを2体以上編成してクリア",
+        "バーストを2体以上編成してクリア",
+        "男性を2体以上編成してクリア",
+        "女性を2体以上編成してクリア",
+        ],
+      ],
+      "濫業・荒滅・凶帯の禁盤":[
+        [
+        "全員生存でクリア",
+        "合計被ダメージ10000以下でクリア",
+        "ラッシュを2体以上編成してクリア",
+        "カウンターを2体以上編成してクリア",
+        "バーストを2体以上編成してクリア",
+        "男性を2体以上編成してクリア",
+        "女性を2体以上編成してクリア",
+        "祖メギドを2体以上編成してクリア",
+        "真メギドを2体以上編成してクリア",
+        "リジェネレイトメギドを2体以上編成してクリア",
+        "ラッシュを編成せずクリア",
+        "カウンターを編成せずクリア",
+        "バーストを編成せずクリア",
+        ],
+        [
+        "オーブを3回以上使用",
+        "オーブを1つも装備せずクリアする",
+        "オーブの技を使用せずクリア",
+        "特効ダメージを7回以上発生させる",
+        "味方を回復する行動を行わずクリア",
+        "5ターン以下でクリア",
+        "パーティの平均HP60%以上でクリア",
+        ],
+        [
+        "アタックを5回以上使用",
+        "スキルを5回以上使用",
+        "チャージを4回以上使用",
+        "強化されたアタックフォトンを2回以上使用",
+        "強化されたスキルフォトンを2回以上使用",
+        "強化されたチャージフォトンを1回以上使用",
+        "覚醒スキルを3回以上使用する",
+        "奥義を3回以上使用する",
+        "地形を1回以上発生させる",
+        "回数バリアを3体以上に付与する（対象重複可）",
+        "かばう効果を2回以上付与する(特性、MEによる効果を除く)",
+        "",
+        ],
+      ],
+      "幻糸の禁盤":[
+        [
+        "PTのHP平均60%以上でクリアする",
+        "全員生存でクリアする",
+        "8ターン以下でクリアする",
+        ],
+        [
+        "ラッシュを2体以上編成してクリア",
+        "カウンターを2体以上編成してクリア",
+        "バーストを2体以上編成してクリア",
+        "ラッシュのみ編成してクリア",
+        "カウンターのみ編成してクリア",
+        "バーストのみ編成してクリア",
+        "ラッシュを編成せずクリア",
+        "カウンターを編成せずクリア",
+        "バーストを編成せずクリア",
+        ],
+        [
+        "男性を2体以上編成してクリア",
+        "女性を2体以上編成してクリア",
+        "祖メギドを2体以上編成してクリア",
+        "真メギドを2体以上編成してクリア",
+        "リジェネレイトメギドを2体以上編成してクリア",
+        ],
+      ],
+    };
+    hash_to_data(DATA);
+    data_to_html(DATA);
+    document.querySelector('#RANDOM').addEventListener('click', (event) => {
+      html_to_data(DATA);
+      
+      try {
+        var base = RULEBASE[DATA.BASE]
+        DATA.RULE1 = base[0][Math.floor(Math.random() * base[0].length)];
+        DATA.RULE2 = base[1][Math.floor(Math.random() * base[1].length)];
+        DATA.RULE3 = base[2][Math.floor(Math.random() * base[2].length)];
+      } catch (e) {
+      }
+      
+      data_to_html(DATA);
+      data_to_hash(DATA);
+    });
+  </script>
+</html>
