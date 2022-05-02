@@ -1,135 +1,139 @@
-<!doctype html> 
+<!doctype html>
 <html>
-  <head>
-    <title>メギド72クリア編成報告サーチ</title>
-    <meta name="author" content="mkszk" />
-    <meta name="keywords" content="メギド72, megido72" />
-    <meta name="description" content="メギド72クリア編成報告サーチ" />
-    <meta name="robots" content="all" />
-    <meta charset="UTF-8" />
-  </head>
-  <body>
-    <h1>メギド72クリア編成報告サーチ</h1>
-    <p>
-      使い方
-      <ol>
-        <li>所持メギドをチェック</li>
-        <li>ステージ名を入力</li>
-        <ul>
-          <li>通常ステージは1～93の数字</li>
-          <li>星間の禁域は大幻獣・ボス幻獣の名前、または、毒と煉獄の試練</li>
-          <li>全ステージ横断検索は*の記号</li>
-        </ul>
-        <li>難易度を入力(N, H, VH, EX, 心深圏)</li>
-        <li>検索を押す</li>
-      </ol>
-      するとメギド72攻略wiki様のマッチするクリア編成報告へのリンクが表示されます。<br />
-      所持メギドにチェックを入れた状態でブックマークすると
-      チェック状態をブックマークに保存できます。
-    </p>
+
+<head>
+  <title>メギド72クリア編成報告サーチ</title>
+  <meta name="author" content="mkszk" />
+  <meta name="keywords" content="メギド72, megido72" />
+  <meta name="description" content="メギド72クリア編成報告サーチ" />
+  <meta name="robots" content="all" />
+  <meta charset="UTF-8" />
+</head>
+
+<body>
+  <h1>メギド72クリア編成報告サーチ</h1>
+  <p>
+    使い方
+  <ol>
+    <li>所持メギドをチェック</li>
+    <li>ステージ名を入力</li>
     <ul>
-      連絡先：https://twitter.com/m_k_szk<br/>
-      ソースコード：https://github.com/mkszk/mkszk.github.io
+      <li>通常ステージは1～96の数字</li>
+      <li>星間の禁域は大幻獣・ボス幻獣の名前、または、毒と煉獄の試練</li>
+      <li>星間の塔は未対応</li>
+      <li>全ステージ横断検索は*の記号</li>
     </ul>
-    <table>
+    <li>難易度を入力(N, H, VH, EX, 心深圏)</li>
+    <li>検索を押す</li>
+  </ol>
+  するとメギド72攻略wiki様のマッチするクリア編成報告へのリンクが表示されます。<br />
+  所持メギドにチェックを入れた状態でブックマークすると
+  チェック状態をブックマークに保存できます。
+  </p>
+  <ul>
+    連絡先：https://twitter.com/m_k_szk<br />
+    ソースコード：https://github.com/mkszk/mkszk.github.io
+  </ul>
+  <table>
+    <tr>
+      <td>ステージ</td>
+      <td><input type="text" class="WATCH" id="STAGE" /></td>
+      <td>難易度</td>
+      <td><input type="text" class="WATCH" id="DIFFICULTY" /></td>
+      <td><input type="button" id="SEARCH" value="検索" /></td>
+      <td><input type="button" id="DELETE" value="消去" /></td>
+    </tr>
+  </table>
+  <table>
+    <tbody id="RESULT" />
+  </table>
+  <table>
+    <tbody id="NAMELIST">
       <tr>
-        <td>ステージ</td>
-        <td><input type="text" class="WATCH" id="STAGE" /></td>
-        <td>難易度</td>
-        <td><input type="text" class="WATCH" id="DIFFICULTY" /></td>
-        <td><input type="button" id="SEARCH" value="検索" /></td>
-        <td><input type="button" id="DELETE" value="消去" /></td>
+        <td><input type="button" value="全選択" id="ALL_ON" /></td>
+        <td><input type="button" value="全解除" id="ALL_OFF" /></td>
       </tr>
-    </table>
-    <table>
-      <tbody id="RESULT" />
-    </table>
-    <table>
-      <tbody id="NAMELIST">
-        <tr>
-          <td><input type="button" value="全選択" id="ALL_ON" /></td>
-          <td><input type="button" value="全解除" id="ALL_OFF" /></td>
-        </tr>
-        <tr>
-          <th>名前</th>
-          <th>所持</th>
-          <th>名前</th>
-          <th>所持</th>
-          <th>名前</th>
-          <th>所持</th>
-          <th>名前</th>
-          <th>所持</th>
-        </tr>
-      </tbody>
-    </table>
-  </body>
-  <script type="text/javascript" src="js/NAMELIST.js" charset="UTF-8"></script>
-  <script type="text/javascript" src="js/DATABASE.js" charset="UTF-8"></script>
-  <script type="text/javascript" src="js/locationhash.js" charset="UTF-8"></script>
-  <script type="text/javascript" src="js/megisearch.js" charset="UTF-8"></script>
-  <script type="text/javascript">
-    //------------------------------------------
-    // create NAMELIST
-    (function() {
-      var addHTML = "";
-      for (var i=0; i<72; ++i) {
-        addHTML += "<tr>";
-        for (var j=0; j<4; ++j) {
-          addHTML += "<td>"+NAMELIST[i+j*72]+"</td>";
-          if (NAMELIST[i+j*72] === "未実装") {
-            addHTML += "<td><input type='checkbox' class='CHECK WATCH' value='"+(i+j*72)+"' disabled /></td>";
-          } else {
-            addHTML += "<td><input type='checkbox' class='CHECK WATCH' value='"+(i+j*72)+"' checked /></td>";
-          }
+      <tr>
+        <th>名前</th>
+        <th>所持</th>
+        <th>名前</th>
+        <th>所持</th>
+        <th>名前</th>
+        <th>所持</th>
+        <th>名前</th>
+        <th>所持</th>
+      </tr>
+    </tbody>
+  </table>
+</body>
+<script type="text/javascript" src="js/NAMELIST.js" charset="UTF-8"></script>
+<script type="text/javascript" src="js/DATABASE.js" charset="UTF-8"></script>
+<script type="text/javascript" src="js/locationhash.js" charset="UTF-8"></script>
+<script type="text/javascript" src="js/megisearch.js" charset="UTF-8"></script>
+<script type="text/javascript">
+  //------------------------------------------
+  // create NAMELIST
+  (function () {
+    var addHTML = "";
+    for (var i = 0; i < 72; ++i) {
+      addHTML += "<tr>";
+      for (var j = 0; j < 4; ++j) {
+        addHTML += "<td>" + NAMELIST[i + j * 72] + "</td>";
+        if (NAMELIST[i + j * 72] === "未実装") {
+          addHTML += "<td><input type='checkbox' class='CHECK WATCH' value='" + (i + j * 72) + "' disabled /></td>";
+        } else {
+          addHTML += "<td><input type='checkbox' class='CHECK WATCH' value='" + (i + j * 72) + "' checked /></td>";
         }
-        addHTML += "</tr>";
       }
-      document.querySelector("#NAMELIST").innerHTML += addHTML;
-    })();
-    
-    //------------------------------------------
-    // load data from location.hash
-    var DATA = {
-      "STAGE":"48",
-      "DIFFICULTY":"VH",
-      "CHECK":Array(72*4).fill(1),
-    };
-    hash_to_data(DATA);
+      addHTML += "</tr>";
+    }
+    document.querySelector("#NAMELIST").innerHTML += addHTML;
+  })();
+
+  //------------------------------------------
+  // load data from location.hash
+  var DATA = {
+    "STAGE": "48",
+    "DIFFICULTY": "VH",
+    "CHECK": Array(72 * 4).fill(1),
+  };
+  hash_to_data(DATA);
+  data_to_html(DATA);
+
+  //------------------------------------------
+  // register Listener to save data
+  document.querySelectorAll('.WATCH').forEach((item) => {
+    item.addEventListener('change', (event) => {
+      html_to_data(DATA);
+      data_to_hash(DATA);
+    });
+  });
+
+  //------------------------------------------
+  // register Listener to search
+  document.querySelector('#SEARCH').addEventListener('click', (event) => {
+    megisearch(DATA, NAMELIST, DATABASE);
+  });
+
+  //------------------------------------------
+  // register Listener to delete
+  document.querySelector('#DELETE').addEventListener('click', (event) => {
+    document.querySelector("#RESULT").innerHTML = "";
+  });
+
+  //------------------------------------------
+  document.querySelector('#ALL_ON').addEventListener('click', (event) => {
+    DATA.CHECK.fill(1);
     data_to_html(DATA);
-    
-    //------------------------------------------
-    // register Listener to save data
-    document.querySelectorAll('.WATCH').forEach((item) => {
-      item.addEventListener('change', (event) => {
-        html_to_data(DATA);
-        data_to_hash(DATA);
-      });
-    });
-    
-    //------------------------------------------
-    // register Listener to search
-    document.querySelector('#SEARCH').addEventListener('click', (event) => {
-      megisearch(DATA, NAMELIST, DATABASE);
-    });
-    
-    //------------------------------------------
-    // register Listener to delete
-    document.querySelector('#DELETE').addEventListener('click', (event) => {
-      document.querySelector("#RESULT").innerHTML = "";
-    });
-    
-    //------------------------------------------
-    document.querySelector('#ALL_ON').addEventListener('click', (event) => {
-      DATA.CHECK.fill(1);
-      data_to_html(DATA);
-      data_to_hash(DATA);
-    });
-    
-    //------------------------------------------
-    document.querySelector('#ALL_OFF').addEventListener('click', (event) => {
-      DATA.CHECK.fill(0);
-      data_to_html(DATA);
-      data_to_hash(DATA);
-    });
-  </script>
+    data_to_hash(DATA);
+  });
+
+  //------------------------------------------
+  document.querySelector('#ALL_OFF').addEventListener('click', (event) => {
+    DATA.CHECK.fill(0);
+    data_to_html(DATA);
+    data_to_hash(DATA);
+  });
+</script>
+
 </html>
