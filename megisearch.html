@@ -87,6 +87,18 @@
       }
       addHTML += "</tr>";
     }
+    for (var i = 0; i < 12; ++i) {
+      addHTML += "<tr>";
+      for (var j = 0; j < 2; ++j) {
+        addHTML += "<td>" + NAMELIST[72 * 4 + i + j * 12] + "</td>";
+        if (NAMELIST[72 * 4 + i + j * 12] === "未実装") {
+          addHTML += "<td><input type='checkbox' class='CHECK WATCH' value='" + (72 * 4 + i + j * 12) + "' disabled /></td>";
+        } else {
+          addHTML += "<td><input type='checkbox' class='CHECK WATCH' value='" + (72 * 4 + i + j * 12) + "' checked /></td>";
+        }
+      }
+      addHTML += "</tr>";
+    }
     document.querySelector("#NAMELIST").innerHTML += addHTML;
   })();
 
@@ -95,7 +107,7 @@
   var DATA = {
     "STAGE": "48",
     "DIFFICULTY": "VH",
-    "CHECK": Array(72 * 4).fill(1),
+    "CHECK": Array(72 * 4 + 12 * 2).fill(1),
   };
   hash_to_data(DATA);
   data_to_html(DATA);
