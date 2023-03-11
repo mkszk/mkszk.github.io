@@ -9,7 +9,31 @@
     <meta charset="UTF-8" />
   </head>
   <body> 
-    <h1 id="ignoreRT">TweetDeckのRT1k以上非表示ブックマークレット</h1>
+    <h1 id="ignore-netabare">Twitter標準Web画面の「ネタバレ」を含むツイートを非表示にするブックマークレット</h1>
+    <pre>
+javascript:(
+  setInterval(
+    function() {
+      Array.prototype.forEach.call(
+        document.getElementsByTagName('article'),
+        function(article) {
+          Array.prototype.forEach.call(
+            article.getElementsByTagName('div'),
+            function(div) {
+              if (div.hasAttribute('data-testid') &&
+                div.getAttribute('data-testid') == 'tweetText') {
+                if (div.innerText.match(/ネタバレ/)) {
+                  article.setAttribute('style','visibility: hidden;');
+                }
+              }
+            }
+          );
+        }
+      );
+    }, 1000)
+)
+</pre>
+    <h1 id="ignoreRT">TweetDeckのRT1k以上のツイートを非表示にするブックマークレット</h1>
     <pre>
 javascript:(
   setInterval(function() {
