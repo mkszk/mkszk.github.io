@@ -360,8 +360,8 @@
         for (var i in trans) {
             details.appendChild(create_shortcut(trans[i][0], trans[i][1]));
         }
-        details.appendChild(create_shortcut("音符発生", "【大協奏状態の場合】||"
-            +"【\\\\d+ターン音符が\\\\d+個以上で効果が変化】音符を\\\\d+つ蓄積)"));
+        details.appendChild(create_shortcut("音符発生", "【大協奏状態の場合】|"
+            +"【\\\\d+ターン音符が\\\\d+個以上で効果が変化】|音符を\\\\d+つ蓄積)"));
         details.appendChild(create_shortcut("バレット作成", "バレットを\\\\d+個作成"));
         details.appendChild(create_shortcut("バレット消費", "バレットを\\\\d+個消費"));
         details.appendChild(create_shortcut("ソウル消費", "ソウルを\\\\d+つ消費"));
