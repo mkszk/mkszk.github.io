@@ -260,6 +260,7 @@
         placeholder.appendChild(details);
 
         var target = "(?:単体|横一列|全体)に";
+        var penet = "(?:防御力を無視した)?"
         var source = "(?:攻撃力|防御力|素早さ)[0-9\\\\.]+倍の";
         var multihit = "(?:\\\\d+連続)?";
         var elemental = "(?:火|雷|破断|響撃|光子)?";
@@ -272,17 +273,17 @@
             "(?:防御力を無視した" + source + multihit + elemental + "ダメージ)|(?:防御力を(?:\\\\d+%)?無視する)"));
         details.appendChild(create_shortcut("種族特効", enemy1 + damage1));
         details.appendChild(create_shortcut("状態異常特効", enemy2 + damage1));
-        details.appendChild(create_shortcut("火ダメージ", target + source + multihit + "火ダメージ"));
-        details.appendChild(create_shortcut("雷ダメージ", target + source + multihit + "雷ダメージ"));
-        details.appendChild(create_shortcut("破断ダメージ", target + source + multihit + "破断ダメージ"));
-        details.appendChild(create_shortcut("響撃ダメージ", target + source + multihit + "響撃ダメージ"));
-        details.appendChild(create_shortcut("光子ダメージ", target + source + multihit + "光子ダメージ"));
+        details.appendChild(create_shortcut("火ダメージ", target + penet + source + multihit + "火ダメージ"));
+        details.appendChild(create_shortcut("雷ダメージ", target + penet + source + multihit + "雷ダメージ"));
+        details.appendChild(create_shortcut("破断ダメージ", target + penet + source + multihit + "破断ダメージ"));
+        details.appendChild(create_shortcut("響撃ダメージ", target + penet + source + multihit + "響撃ダメージ"));
+        details.appendChild(create_shortcut("光子ダメージ", target + penet + source + multihit + "光子ダメージ"));
         details.appendChild(create_shortcut("固定ダメージ", "の固定ダメージ"));
         details.appendChild(create_shortcut("防御力依存ダメージ", "防御力[0-9\\\\.]+倍の" + multihit + elemental + "ダメージ"));
         details.appendChild(create_shortcut("素早さ依存ダメージ", "素早さ[0-9\\\\.]+倍の" + multihit + elemental + "ダメージ"));
-        details.appendChild(create_shortcut("連続ダメージ", target + source + "\\\\d+連続" + elemental + "ダメージ"));
-        details.appendChild(create_shortcut("列ダメージ", "横一列に" + source + multihit + elemental + "ダメージ"));
-        details.appendChild(create_shortcut("全体ダメージ", "全体に" + source + multihit + elemental + "ダメージ"));
+        details.appendChild(create_shortcut("連続ダメージ", target + penet + source + "\\\\d+連続" + elemental + "ダメージ"));
+        details.appendChild(create_shortcut("列ダメージ", "横一列に" + penet + source + multihit + elemental + "ダメージ"));
+        details.appendChild(create_shortcut("全体ダメージ", "全体に" + penet + source + multihit + elemental + "ダメージ"));
         placeholder.appendChild(details);
 
         var heal1 = "(?:(?<!ターン終了時に|毎ターン終了時、)(?:自身|味方(?:単体|横一列|全体))のHPを\\\\d+%回復)";
