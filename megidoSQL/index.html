@@ -1,0 +1,101 @@
+<html>
+<head>
+<meta charset="utf-8"/>
+<script src="js/alasql.min.js" type="text/javascript"></script>
+<script src="js/database.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/functions.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body onload="functions.initialize();functions.initialize_shortcut();">
+    <h1>メギド７２ 公式ポータル検索</h1>
+    <p>メギド７２ 公式ポータルのデータを検索するWebアプリです。</p>
+    <details>
+        <summary>使い方</summary>
+        <p>
+            本Webアプリでメギド７２ 公式ポータルのデータを検索するには、
+            SQL検索式欄にSQL検索式を入力し、検索実行のボタンを押してください。
+            すると、検索結果欄に検索結果が出力されます。
+        </p>
+        <p>
+            また、「SQLの使い方が分からない！」という方は、
+            ショートカット欄に用意してあるボタンを試してください。
+            事前に用意してあるSQL検索式で検索できます。
+        </p>
+    </details>
+    <details>
+        <summary>テーブル定義</summary>
+        <h4>テーブル megido の説明</h4>
+        <p>テーブル megido は以下のように定義されます。</p>
+        <pre>CREATE TABLE megido (style STRING, klass STRING, name STRING, gage INTEGER, category STRING, description STRING)</pre>
+        <table>
+            <tbody>
+                <tr><th>name</th><td>名前：「メギド名」／「メギド名（リジェネ時のスタイル）」</td></tr>
+                <tr><th>style</th><td>スタイル：ラッシュ／カウンター／バースト</td></tr>
+                <tr><th>klass</th><td>クラス：ファイター／トルーパー／スナイパー ※ライブラリの都合で「class」ではなく「klass」</td></tr>
+                <tr><th>category</th><td>種別：特性／第1特性／第2特性／スキル／＋スキル／＋＋スキル／覚醒スキル／＋覚醒スキル／＋＋覚醒スキル／奥義／＋奥義／＋＋奥義</td></tr>
+                <tr><th>description</th><td>詳細説明の文章</td></tr>
+            </tbody>
+        </table>
+        <h4>テーブル mass_effect の説明</h4>
+        <p>テーブル mass_effect は以下のように定義されます。</p>
+        <pre>CREATE TABLE mass_effect (name STRING, position STRING, condition STRING, effect STRING)</pre>
+        <table>
+            <tbody>
+                <tr><th>name</th><td>名前：非リジェネはメギド名そのまま、リジェネは「メギド名（リジェネ時のスタイル）」</td></tr>
+                <tr><th>position</th><td>編成の枠位置：枠1／枠2／枠3／枠4／枠5</td></tr>
+                <tr><th>condition</th><td>条件：-／ラッシュ／カウンター／バースト／ラッシュ＋ファイター／……</td></tr>
+                <tr><th>effect</th><td>詳細説明の文章</td></tr>
+            </tbody>
+        </table>
+        <h4>テーブル orb の説明</h4>
+        <p>テーブル orb は以下のように定義されます。</p>
+        <pre>CREATE TABLE orb (style STRING, rarity STRING, name STRING, ct INTEGER, category STRING, description STRING)</pre>
+        <table>
+            <caption></caption>
+            <tbody>
+                <tr><th>name</th><td>名前：「オーブ名（スタイル）」</td></tr>
+                <tr><th>style</th><td>スタイル：ラッシュ／カウンター／バースト</td></tr>
+                <tr><th>rarity</th><td>レアリティ：N／R／SR／SSR／EX</td></tr>
+                <tr><th>category</th><td>種別：特性／技</td></tr>
+                <tr><th>description</th><td>詳細説明の文章</td></tr>
+            </tbody>
+        </table>
+        <h4>ビュー megido_orb の説明</h4>
+        <p>ビュー orb は以下のように定義されます。テーブルと同様に利用できます。</p>
+        <pre>CREATE VIEW megido_orb AS
+    SELECT style, '' as rarity, klass, name, category, description FROM megido
+    UNION SELECT style, rarity, '' as klass, name, category, description FROM orb;</pre>
+    </details>
+    <details>
+        <summary>仕組み</summary>
+        <p>本Webアプリは以下のような仕組みで動いています。</p>
+        <ol>
+            <li>
+                開発者側で公式ポータルのデータベースのページをJSONデータベースに変換し、本Webアプリに設置しました。
+                （公式ポータルへのアクセスは開発時の各ページ１回のみであり、検索のたびに各ページにアクセスするようなことはありません）
+            </li>
+            <li>
+                利用者側で検索を実行すると、利用者側Webブラウザー上で<a href="https://github.com/AlaSQL/alasql">AlaSQL</a>がJSONデータベースを検索します。
+                （利用者側Webブラウザー上で検索しており、GitHubでのスクリプト処理による負荷も発生せず、クロス サイト スクリプティングのような脆弱性は発生しません）
+            </li>
+        </ol>
+    </details>
+    <details>
+        <summary>ショートカット</summary>
+        <template id="template_shortcut">
+            <input type="button" value="{$1}" onclick="functions.call_shortcut('SELECT * FROM megido_orb WHERE REGEXP_LIKE(description,&quot;.*{$2}.*&quot;) ORDER BY rarity, style, klass');"/>
+        </template>
+        <div id="placeholder_shortcut">
+        </div>
+    </details>
+    <h2>SQL検索式</h2>
+    <textarea cols="80" rows="5" id="query"></textarea>
+    <h2>操作</h2>
+    <input type="button" value="検索実行" onclick="functions.search();"/>
+    <input type="button" value="検索結果消去" onclick="functions.clear_table();"/>
+    <h2>検索結果</h2>
+    <table border="1" cellspacing="0">
+        <thead id="thead"></thead>
+        <tbody id="tbody"></tbody>
+    </table>
+</body>
+</html>
