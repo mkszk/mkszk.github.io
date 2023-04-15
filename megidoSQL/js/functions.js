@@ -28,8 +28,8 @@
         alasql.tables.orb.data = database.orb;
 
         var query = ("CREATE VIEW megido_orb AS" +
-            "  SELECT style, '' as rarity, klass, name, category, description FROM megido" +
-            "  UNION SELECT style, rarity, '' as klass, name, category, description FROM orb");
+            "  SELECT style, '' as rarity, klass, name, gage, '' as ct, category, description FROM megido" +
+            "  UNION SELECT style, rarity, '' as klass, name, '' as gage, ct, category, description FROM orb");
         alasql(query);
 
         try {

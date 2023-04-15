@@ -36,6 +36,7 @@
                     <tr><th>name</th><td>名前：「メギド名」／「メギド名（リジェネ時のスタイル）」</td></tr>
                     <tr><th>style</th><td>スタイル：ラッシュ／カウンター／バースト</td></tr>
                     <tr><th>klass</th><td>クラス：ファイター／トルーパー／スナイパー ※ライブラリの都合で「class」ではなく「klass」</td></tr>
+                    <tr><th>gage</th><td>覚醒ゲージ：2～6</td></tr>
                     <tr><th>category</th><td>種別：特性／第1特性／第2特性／スキル／＋スキル／＋＋スキル／覚醒スキル／＋覚醒スキル／＋＋覚醒スキル／奥義／＋奥義／＋＋奥義</td></tr>
                     <tr><th>description</th><td>詳細説明の文章</td></tr>
                 </tbody>
@@ -60,15 +61,16 @@
                     <tr><th>name</th><td>名前：「オーブ名（スタイル）」</td></tr>
                     <tr><th>style</th><td>スタイル：ラッシュ／カウンター／バースト</td></tr>
                     <tr><th>rarity</th><td>レアリティ：N／R／SR／SSR／EX</td></tr>
+                    <tr><th>ct</th><td>CT：1～3</td></tr>
                     <tr><th>category</th><td>種別：特性／技</td></tr>
                     <tr><th>description</th><td>詳細説明の文章</td></tr>
                 </tbody>
             </table>
             <h4>ビュー megido_orb の説明</h4>
-            <p>ビュー orb は以下のように定義されます。テーブルと同様に利用できます。</p>
+            <p>ビュー megido_orb は以下のように定義されます。テーブルと同様に利用できます。</p>
             <pre>CREATE VIEW megido_orb AS
-        SELECT style, '' as rarity, klass, name, category, description FROM megido
-        UNION SELECT style, rarity, '' as klass, name, category, description FROM orb;</pre>
+        SELECT style, '' as rarity, klass, name, gage, '' as ct, category, description FROM megido
+        UNION SELECT style, rarity, '' as klass, name, '' as gage, ct, category, description FROM orb;</pre>
         </details>
         <details>
             <summary>仕組み</summary>
