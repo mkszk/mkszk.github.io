@@ -7,31 +7,57 @@
         root.functions = factory();
     }
 }(this, function () {
-    function text_to_html(key) {
-        if (key in database.text_to_html) {
-            return database.text_to_html[key];
-        } else {
-            return "<td>" + key + "</td>";
-        }
-    }
     function initialize() {
-        var query = "CREATE TABLE megido (style STRING, klass STRING, name STRING, gage INTEGER, category STRING, description STRING)";
+        var query = ("CREATE TABLE megido_basic "+
+            "(megido_name STRING, megido_number STRING, style STRING, klass STRING, gage INTEGER, "
+            +"race STRING, gender STRING, megido_intro STRING, me_intro STRING, CV STRING, link STRING)");
         alasql(query);
-        alasql.tables.megido.data = database.megido;
-
-        var query = "CREATE TABLE mass_effect (name STRING, position STRING, condition STRING, effect STRING)";
+        alasql.tables.megido_basic.data = database.megido_basic;
+        
+        var query = ("CREATE TABLE megido_status "+
+            "(megido_name STRING, category STRING, evolution INTEGER, data INTEGER)");
+        alasql(query);
+        alasql.tables.megido_status.data = database.megido_status;
+        
+        var query = ("CREATE TABLE megido_skill "+
+            "(megido_name STRING, category STRING, skill_name STRING, description STRING)");
+        alasql(query);
+        alasql.tables.megido_skill.data = database.megido_skill;
+        
+        var query = ("CREATE TABLE orb_basic "+
+            "(orb_name STRING, style STRING, rarity STRING, race STRING, CT STRING, link STRING)");
+        alasql(query);
+        alasql.tables.orb_basic.data = database.orb_basic;
+        
+        var query = ("CREATE TABLE orb_skill "+
+            "(orb_name STRING, category STRING, skill_name STRING, description STRING)");
+        alasql(query);
+        alasql.tables.orb_skill.data = database.orb_skill;
+        
+        var query = ("CREATE TABLE mass_effect "+
+            "(megido_name STRING, position INTEGER, style STRING, klass STRING, gender STRING, description STRING)");
         alasql(query);
         alasql.tables.mass_effect.data = database.mass_effect;
 
-        var query = "CREATE TABLE orb (style STRING, rarity STRING, name STRING, ct INTEGER, category STRING, description STRING)";
-        alasql(query);
-        alasql.tables.orb.data = database.orb;
-
-        var query = ("CREATE VIEW megido_orb AS" +
-            "  SELECT style, '' as rarity, klass, name, gage, '' as ct, category, description FROM megido" +
-            "  UNION SELECT style, rarity, '' as klass, name, '' as gage, ct, category, description FROM orb");
+        var query = ("CREATE VIEW megido AS "+
+            "SELECT megido_name AS name, style, klass, gage, category, "+
+            "('<strong>'+skill_name+'</strong><br/>'+description) AS description "+
+            "FROM (SELECT * FROM megido_basic NATURAL INNER JOIN megido_skill) "+
+            "WHERE category LIKE '%特性' or category LIKE '＋%' or category = '秘奥義'");
         alasql(query);
 
+        var query = ("CREATE VIEW orb AS "+
+            "SELECT orb_name AS name, style, rarity, CT, category, "+
+            "('<strong>'+skill_name+'</strong><br/>'+description) AS description "+
+            "FROM (SELECT * FROM orb_basic NATURAL INNER JOIN orb_skill) "+
+            "WHERE category LIKE '特性%' or category LIKE '技%'");
+        alasql(query);
+
+        var query = ("CREATE VIEW megido_orb AS "+
+            "SELECT style, '' as rarity, klass, name, gage, '' as ct, category, description FROM megido "+
+            "UNION SELECT style, rarity, '' as klass, name, '' as gage, CT, category, description FROM orb");
+        alasql(query);
+            
         try {
             var data = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
             var query = document.getElementById("query");
@@ -51,8 +77,11 @@
         if (res.length > 0) {
             var tr = document.createElement("tr");
             var entry = res[0];
-            for (var i in entry) {
-                tr.innerHTML += text_to_html(i);
+            for (var key in entry) {
+                if (key in database.header) {
+                    key = database.header[key];
+                }
+                tr.innerHTML += "<th>" + key + "</th>";
             }
             thead.appendChild(tr);
         }
@@ -61,7 +90,7 @@
         for (var i in res) {
             var tr = document.createElement("tr");
             for (var j in res[i]) {
-                tr.innerHTML += text_to_html(res[i][j]);
+                tr.innerHTML += "<td>" + res[i][j] + "</td>";
             }
             tbody.appendChild(tr);
         }
@@ -100,7 +129,7 @@
             ["スキルバリア", "スキルフォトンからのダメージを\\\\d+%軽減"],
             ["列化", "効果範囲を列化"],
             ["全体化", "効果範囲を全体化"],
-            ["追加ダメージ", "Lv×\\\\d+の固定追加ダメージを付与"],
+            ["固定追加ダメージ", "Lv×\\\\d+の固定追加ダメージを付与"],
             ["無敵", "無敵状態に"],
             ["追撃", "味方のアタックに対して自身が追撃する状態"],
             ["魅了", "魅了状態"],
@@ -385,7 +414,6 @@
     }
 
     return {
-        text_to_html: text_to_html,
         initialize: initialize,
         search: search,
         initialize_shortcut: initialize_shortcut,

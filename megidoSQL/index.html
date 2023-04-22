@@ -28,49 +28,126 @@
         </details>
         <details>
             <summary>テーブル定義</summary>
-            <h4>テーブル megido の説明</h4>
-            <p>テーブル megido は以下のように定義されます。</p>
-            <pre>CREATE TABLE megido (style STRING, klass STRING, name STRING, gage INTEGER, category STRING, description STRING)</pre>
+            <h4>テーブル megido_basic の説明</h4>
+            <p>テーブル megido_basic は以下のように定義されます。</p>
+            <pre>
+                CREATE TABLE megido_basic
+                (megido_name STRING, megido_number STRING, style STRING, klass STRING, gage INTEGER,
+                race STRING, gender STRING, megido_intro STRING, me_intro STRING, CV STRING, link STRING);
+            </pre>
             <table>
                 <tbody>
-                    <tr><th>name</th><td>名前：「メギド名」／「メギド名（リジェネ時のスタイル）」</td></tr>
+                    <tr><th>megido_name</th><td>名前：「メギド名」／「メギド名（リジェネ時のスタイル）」</td></tr>
+                    <tr><th>megido_number</th><td>メギドNo.：「番号」／「真-（番号）」／「継-（番号）」／「宵-（番号）」</td></tr>
                     <tr><th>style</th><td>スタイル：ラッシュ／カウンター／バースト</td></tr>
                     <tr><th>klass</th><td>クラス：ファイター／トルーパー／スナイパー ※ライブラリの都合で「class」ではなく「klass」</td></tr>
                     <tr><th>gage</th><td>覚醒ゲージ：2～6</td></tr>
-                    <tr><th>category</th><td>種別：特性／第1特性／第2特性／スキル／＋スキル／＋＋スキル／覚醒スキル／＋覚醒スキル／＋＋覚醒スキル／奥義／＋奥義／＋＋奥義</td></tr>
+                    <tr><th>race</th><td>種族：（空欄）／飛行</td></tr>
+                    <tr><th>gender</th><td>性別：男性／女性</td></tr>
+                    <tr><th>megido_intro</th><td>メギドの紹介文</td></tr>
+                    <tr><th>me_intro</th><td>マスエフェクトの紹介文</td></tr>
+                    <tr><th>CV</th><td>声優</td></tr>
+                    <tr><th>link</th><td>公式ポータルへのリンク</td></tr>
+                </tbody>
+            </table>
+            <h4>テーブル megido_status の説明</h4>
+            <p>テーブル megido_status は以下のように定義されます。</p>
+            <pre>
+                CREATE TABLE megido_status
+                (megido_name STRING, category STRING, evolution INTEGER, data INTEGER);
+            </pre>
+            <table>
+                <tbody>
+                    <tr><th>megido_name</th><td>名前：「メギド名」／「メギド名（リジェネ時のスタイル）」</td></tr>
+                    <tr><th>category</th><td>分類：HP／攻撃力／防御力／素早さ</td></tr>
+                    <tr><th>evolution</th><td>進化度：1／3／6</td></tr>
+                    <tr><th>data</th><td>ステータスの数値</td></tr>
+                </tbody>
+            </table>
+            <h4>テーブル megido_skill の説明</h4>
+            <p>テーブル megido_skill は以下のように定義されます。</p>
+            <pre>
+                CREATE TABLE megido_skill
+                (megido_name STRING, category STRING, skill_name STRING, description STRING);
+            </pre>
+            <table>
+                <tbody>
+                    <tr><th>megido_name</th><td>名前：「メギド名」／「メギド名（リジェネ時のスタイル）」</td></tr>
+                    <tr><th>category</th><td>分類：（,第1,2）特性／（,＋,＋＋）スキル／（,＋,＋＋）覚醒スキル／（,＋,＋＋）奥義／秘奥義</td></tr>
+                    <tr><th>skill_name</th><td>スキル名</td></tr>
+                    <tr><th>description</th><td>詳細説明の文章</td></tr>
+                </tbody>
+            </table>
+            <h4>テーブル orb_basic の説明</h4>
+            <p>テーブル orb_basic は以下のように定義されます。</p>
+            <pre>
+                CREATE TABLE orb_basic
+                (orb_name STRING, style STRING, rarity STRING, race STRING, CT STRING, link STRING);
+            </pre>
+            <table>
+                <tbody>
+                    <tr><th>orb_name</th><td>名前：「オーブ名（スタイル）」</td></tr>
+                    <tr><th>style</th><td>スタイル：ラッシュ／カウンター／バースト</td></tr>
+                    <tr><th>rarity</th><td>レアリティ：N／R／SR／SSR／EX</td></tr>
+                    <tr><th>race</th><td>種族：悪魔／神／飛行など、最大3つを「,」でつないだもの</td></tr>
+                    <tr><th>CT</th><td>CT：1～3</td></tr>
+                    <tr><th>link</th><td>公式ポータルへのリンク</td></tr>
+                </tbody>
+            </table>
+            <h4>テーブル orb_skill の説明</h4>
+            <p>テーブル orb_skill は以下のように定義されます。</p>
+            <pre>
+                CREATE TABLE orb_skill
+                (orb_name STRING, category STRING, skill_name STRING, description STRING);
+            </pre>
+            <table>
+                <tbody>
+                    <tr><th>orb_name</th><td>名前：「オーブ名（スタイル）」</td></tr>
+                    <tr><th>category</th><td>分類：特性／技</td></tr>
+                    <tr><th>skill_name</th><td>スキル名</td></tr>
                     <tr><th>description</th><td>詳細説明の文章</td></tr>
                 </tbody>
             </table>
             <h4>テーブル mass_effect の説明</h4>
             <p>テーブル mass_effect は以下のように定義されます。</p>
-            <pre>CREATE TABLE mass_effect (name STRING, position STRING, condition STRING, effect STRING)</pre>
+            <pre>
+                CREATE TABLE mass_effect (name STRING, position STRING, condition STRING, effect STRING);
+            </pre>
             <table>
                 <tbody>
                     <tr><th>name</th><td>名前：非リジェネはメギド名そのまま、リジェネは「メギド名（リジェネ時のスタイル）」</td></tr>
-                    <tr><th>position</th><td>編成の枠位置：枠1／枠2／枠3／枠4／枠5</td></tr>
-                    <tr><th>condition</th><td>条件：-／ラッシュ／カウンター／バースト／ラッシュ＋ファイター／……</td></tr>
-                    <tr><th>effect</th><td>詳細説明の文章</td></tr>
-                </tbody>
-            </table>
-            <h4>テーブル orb の説明</h4>
-            <p>テーブル orb は以下のように定義されます。</p>
-            <pre>CREATE TABLE orb (style STRING, rarity STRING, name STRING, ct INTEGER, category STRING, description STRING)</pre>
-            <table>
-                <caption></caption>
-                <tbody>
-                    <tr><th>name</th><td>名前：「オーブ名（スタイル）」</td></tr>
-                    <tr><th>style</th><td>スタイル：ラッシュ／カウンター／バースト</td></tr>
-                    <tr><th>rarity</th><td>レアリティ：N／R／SR／SSR／EX</td></tr>
-                    <tr><th>ct</th><td>CT：1～3</td></tr>
-                    <tr><th>category</th><td>種別：特性／技</td></tr>
+                    <tr><th>position</th><td>編成の枠位置：1／2／3／4／5</td></tr>
+                    <tr><th>style</th><td>スタイル指定：ラッシュ／カウンター／バースト／*</td></tr>
+                    <tr><th>klass</th><td>クラス指定：ファイター／トルーパー／スナイパー／*</td></tr>
+                    <tr><th>gender</th><td>性別指定：男性／女性／*</td></tr>
                     <tr><th>description</th><td>詳細説明の文章</td></tr>
                 </tbody>
             </table>
+            <h4>ビュー megido の説明</h4>
+            <p>ビュー megido は以下のように定義されます。テーブルと同様に利用できます。</p>
+            <pre>
+                CREATE VIEW megido AS
+                SELECT megido_name AS name, style, klass, gage, category,
+                ('&lt;strong&gt;'+skill_name+'&lt;/strong&gt;&lt;br/&gt;'+description) AS description
+                FROM (SELECT * FROM megido_basic NATURAL INNER JOIN megido_skill)
+                WHERE category LIKE '%特性' or category LIKE '＋%' or category = '秘奥義';
+            </pre>
+            <h4>ビュー orb の説明</h4>
+            <p>ビュー orb は以下のように定義されます。テーブルと同様に利用できます。</p>
+            <pre>
+                CREATE VIEW orb AS
+                SELECT orb_name AS name, style, rarity, CT, category,
+                ('&lt;strong&gt;'+skill_name+'&lt;/strong&gt;&lt;br/&gt;'+description) AS description
+                FROM (SELECT * FROM orb_basic NATURAL INNER JOIN orb_skill)
+                WHERE category LIKE '特性%' or category LIKE '技%';
+            </pre>
             <h4>ビュー megido_orb の説明</h4>
             <p>ビュー megido_orb は以下のように定義されます。テーブルと同様に利用できます。</p>
-            <pre>CREATE VIEW megido_orb AS
-        SELECT style, '' as rarity, klass, name, gage, '' as ct, category, description FROM megido
-        UNION SELECT style, rarity, '' as klass, name, '' as gage, ct, category, description FROM orb;</pre>
+            <pre>
+                CREATE VIEW megido_orb AS
+                SELECT style, '' as rarity, klass, name, gage, '' as ct, category, description FROM megido
+                UNION SELECT style, rarity, '' as klass, name, '' as gage, ct, category, description FROM orb;
+            </pre>
         </details>
         <details>
             <summary>仕組み</summary>
