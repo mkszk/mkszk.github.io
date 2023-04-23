@@ -38,6 +38,11 @@
             "(megido_name STRING, position INTEGER, style STRING, klass STRING, gender STRING, description STRING)");
         alasql(query);
         alasql.tables.mass_effect.data = database.mass_effect;
+        
+        var query = ("CREATE TABLE help "+
+            "(name STRING, category STRING, description STRING, link STRING)");
+        alasql(query);
+        alasql.tables.help.data = database.help;
 
         var query = ("CREATE VIEW megido AS "+
             "SELECT megido_name AS name, style, klass, gage, category, "+
