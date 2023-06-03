@@ -1,0 +1,80 @@
+<html>
+    <head>
+        <title>メギド７２ 探索力の最適化</title>
+        <meta charset="utf-8"/>
+        <script src="js/alasql.min.js" type="text/javascript"></script>
+        <script src="js/database.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/functions.js" type="text/javascript" charset="utf-8"></script>
+    </head>
+    <body onload="functions.initialize();functions.initialize_status();">
+        <h1>メギド７２ 探索力の最適化</h1>
+        <p>メギド７２の各メギドについて、探索力を最適化する霊宝の組み合わせを求めます。</p>
+        <details>
+            <summary>使い方</summary>
+            <p>
+                本Webアプリで探索力を最適化する霊宝の組み合わせを求めるには、
+                スタイル・ステータス（HP,攻撃力,防御力,素早さ）・匣の大きさ（４箇所）を入力し、
+                最適化ボタンを押してください。
+                すると、最適化結果欄に最適化結果が出力されます。
+            </p>
+            <p>
+                また、各メギドについて、☆6Lv70時のステータスを読み込むことができます。
+            </p>
+        </details>
+        <details>
+            <summary>☆6Lv70時のステータスの読み込み</summary>
+            <template id="template_load_status">
+                <input type="button" value="{$1}" onclick="functions.load_status('{$1}')"/>
+            </template>
+            <div id="placeholder_load_status">
+            </div>
+        </details>
+        <h2>スタイル</h2>
+        <p>
+            <input type="radio" name="style" value="ラッシュ" checked> ラッシュ
+            <input type="radio" name="style" value="カウンター"> カウンター
+            <input type="radio" name="style" value="バースト"> バースト
+        </p>
+        <h2>ステータス</h2>
+        <p>
+            HP　　<input type="number" id="health" value="10000">
+        </p>
+        <p>
+            攻撃力<input type="number" id="attack" value="1000">
+        </p>
+        <p>
+            防御力<input type="number" id="defence" value="500">
+        </p>
+        <p>
+            素早さ<input type="number" id="dexterity" value="500">
+        </p>
+        <h2>匣の大きさ</h2>
+        <p>
+            <input type="radio" name="size1" value="3" checked> 大
+            <input type="radio" name="size1" value="2"> 中
+            <input type="radio" name="size1" value="1"> 小
+        </p>
+        <p>
+            <input type="radio" name="size2" value="3" checked> 大
+            <input type="radio" name="size2" value="2"> 中
+            <input type="radio" name="size2" value="1"> 小
+        </p>
+        <p>
+            <input type="radio" name="size3" value="3" checked> 大
+            <input type="radio" name="size3" value="2"> 中
+            <input type="radio" name="size3" value="1"> 小
+        </p>
+        <p>
+            <input type="radio" name="size4" value="3" checked> 大
+            <input type="radio" name="size4" value="2"> 中
+            <input type="radio" name="size4" value="1"> 小
+        </p>
+        <h2>操作</h2>
+        <input type="button" value="最適化実行" onclick="functions.optimize();"/>
+        <h2>最適化結果</h2>
+        <table border="1" cellspacing="0">
+            <thead id="thead"></thead>
+            <tbody id="tbody"></tbody>
+        </table>
+    </body>
+</html>

@@ -38,7 +38,13 @@
             "(megido_name STRING, position INTEGER, style STRING, klass STRING, gender STRING, description STRING)");
         alasql(query);
         alasql.tables.mass_effect.data = database.mass_effect;
-
+        
+        var query = ("CREATE TABLE treasure "+
+            "(treasure_name STRING, rush INTEGER, counter INTEGER, burst INTEGER, size INTEGER, effect STRING, "+
+            "health INTEGER, attack INTEGER, defence INTEGER, dexterity INTEGER)");
+        alasql(query);
+        alasql.tables.treasure.data = database.treasure;
+        
         var query = ("CREATE VIEW megido AS "+
             "SELECT megido_name AS name, style, klass, gage, category, "+
             "('<strong>'+skill_name+'</strong><br/>'+description) AS description "+
@@ -412,6 +418,169 @@
         query.value = text;
         search();
     }
+    function load_status(megido_name) {
+        var query = ("SELECT style FROM megido_basic WHERE megido_name == ?");
+        var style = alasql(query, [megido_name])[0].style;
+        var elems = document.getElementsByName("style");
+        for (var i = 0; i < elems.length; i++) {
+            if (elems[i].value == style) {
+                elems[i].checked = true;
+            } else {
+                elems[i].checked = false;
+            }
+        }
+
+        var query = ("SELECT data FROM megido_status "+
+            "WHERE megido_name == ? AND category == ? AND evolution == '6'");
+        document.getElementById("health").value = alasql(query, [megido_name, "HP"])[0].data;
+        document.getElementById("attack").value = alasql(query, [megido_name, "攻撃力"])[0].data;
+        document.getElementById("defence").value = alasql(query, [megido_name, "防御力"])[0].data;
+        document.getElementById("dexterity").value = alasql(query, [megido_name, "素早さ"])[0].data;
+    }
+    function initialize_status() {
+        var template = document.getElementById("template_load_status");
+        var placeholder = document.getElementById("placeholder_load_status");
+        var query = ("SELECT megido_name FROM megido_basic WHERE style == ? AND klass == ?");
+
+        var styles = ["ラッシュ", "カウンター", "バースト"];
+        var klasses = ["ファイター", "トルーパー", "スナイパー"];
+
+        for (var i = 0; i < styles.length; i++) {
+            for (var j = 0; j < klasses.length; j++) {
+                var details = document.createElement("details");
+                details.innerHTML += "<summary>" + styles[i] + "・" + klasses[j] + "</summary>";
+
+                var res = alasql(query, [styles[i], klasses[j]]);
+                for (var k = 0; k < res.length; k++) {
+                    var clone = template.cloneNode(true);
+                    clone.innerHTML = clone.innerHTML.replace(/{\$1}/g, res[k].megido_name);
+                    details.appendChild(clone.content);
+                }
+                placeholder.appendChild(details);
+                console.log(details);
+            }
+        }
+        console.log(placeholder);
+    }
+    function find_pareto_front(rush, counter, burst, size) {
+        var query = ("SELECT t1.treasure_name, t1.health, t1.attack, t1.defence, t1.dexterity "+
+            "FROM treasure AS t1 "+
+            "WHERE t1.rush >= ? AND t1.counter >= ? AND t1.burst >= ? AND t1.size <= ? "+
+            "AND NOT EXISTS (SELECT * FROM treasure AS t2 "+
+            "    WHERE t2.rush >= ? AND t2.counter >= ? AND t2.burst >= ? AND t2.size <= ? "+
+            "    AND t1.health <= t2.health AND t1.attack<= t2.attack "+
+            "    AND t1.defence <= t2.defence AND t1.dexterity <= t2.dexterity "+
+            "    AND NOT (t1.treasure_name <= t2.treasure_name "+
+            "        AND t1.health == t2.health AND t1.attack == t2.attack "+
+            "        AND t1.defence == t2.defence AND t1.dexterity == t2.dexterity))");
+        var res = alasql(query, [rush, counter, burst, size, rush, counter, burst, size]);
+        return res;
+    }
+    function optimize() {
+        var rush = 0;
+        var counter = 0;
+        var burst = 0;
+        var elems = document.getElementsByName("style");
+        for (var i = 0; i < elems.length; i++) {
+            if (elems[i].checked) {
+                if (elems[i].value == "ラッシュ") {
+                    rush = 1;
+                } else if (elems[i].value == "カウンター") {
+                    counter = 1;
+                }  else if (elems[i].value == "バースト") {
+                    burst = 1;
+                }
+            }
+        }
+        var health = parseInt(document.getElementById("health").value);
+        var attack = parseInt(document.getElementById("attack").value);
+        var defence = parseInt(document.getElementById("defence").value);
+        var dexterity = parseInt(document.getElementById("dexterity").value);
+        var size_list = [];
+        for (var i = 1; i <= 4; i++) {
+            document.getElementsByName("size" + i).forEach(function(elm){
+                if (elm.checked) {
+                    size_list.push(parseInt(elm.value));
+                }
+            });
+        }
+        size_list.sort((a, b) => a - b);
+
+        var candidate_list = [];
+        for (var i = 0; i < size_list.length; i++) {
+            candidate_list.push(find_pareto_front(rush, counter, burst, size_list[i]));
+        }
+
+        var max_value = 0;
+        var max_index = undefined;
+        var index_list = new Array(size_list.length);
+        for (var i = 0; i < index_list.length; i++) {
+            index_list[i] = candidate_list[i].length - 1;
+        }
+        while (true) {
+            var temp_health = health;
+            var temp_attack = attack;
+            var temp_defence = defence;
+            var temp_dexterity = dexterity;
+            
+            for (var i = 0; i < index_list.length; i++) {
+                var entry = candidate_list[i][index_list[i]];
+                if (entry) {
+                    temp_health += entry.health;
+                    temp_attack += entry.attack;
+                    temp_defence += entry.defence;
+                    temp_dexterity += entry.dexterity;
+                }
+            }
+            var temp_value = temp_attack * temp_dexterity / 1000 + temp_health * temp_defence / 10000;
+            if (temp_value > max_value) {
+                max_value = temp_value;
+                max_index = [...index_list];
+            }
+
+            if (index_list.every(elm => {return elm == 0})) {
+                var treasure_list = [...Array(max_index.length)].map(function (_, i) { return candidate_list[i][max_index[i]]; });
+                for (var i = 0; i < treasure_list.length; i++) {
+                    if (i == 0) {
+                        var thead = document.getElementById("thead");
+                        thead.innerHTML = "";
+                        var tr = document.createElement("tr");
+                        for (var key in treasure_list[i]) {
+                            if (key in database.header) {
+                                key = database.header[key];
+                            }
+                            tr.innerHTML += "<th>" + key + "</th>";
+                        }
+                        thead.appendChild(tr);
+                    }
+                    var tbody = document.getElementById("tbody");
+                    if (i == 0) {
+                        tbody.innerHTML = "";
+                    }
+                    var tr = document.createElement("tr");
+                    for (var j in treasure_list[i]) {
+                        tr.innerHTML += "<td>" + treasure_list[i][j] + "</td>";
+                    }
+                    tbody.appendChild(tr);
+                }
+        
+                return treasure_list;
+            } else {
+                while (true) {
+                    index_list[0] -= 1;
+                    for (var i = 1; i < index_list.length; i++) {
+                        if (index_list[i-1] < 0) {
+                            index_list[i-1] = candidate_list[i].length - 1;
+                            index_list[i] -= 1;
+                        }
+                    }
+                    if ([...Array(index_list.length-1)].every(function (_, i) { return index_list[i] <= index_list[i + 1]; })) {
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
     return {
         initialize: initialize,
@@ -419,5 +588,8 @@
         initialize_shortcut: initialize_shortcut,
         clear_table: clear_table,
         call_shortcut: call_shortcut,
+        initialize_status:initialize_status,
+        load_status:load_status,
+        optimize:optimize,
     }
 }));
