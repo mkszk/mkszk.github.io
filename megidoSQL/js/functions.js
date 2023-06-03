@@ -457,10 +457,8 @@
                     details.appendChild(clone.content);
                 }
                 placeholder.appendChild(details);
-                console.log(details);
             }
         }
-        console.log(placeholder);
     }
     function find_pareto_front(rush, counter, burst, size) {
         var query = ("SELECT t1.treasure_name, t1.health, t1.attack, t1.defence, t1.dexterity "+
