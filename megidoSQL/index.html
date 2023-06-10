@@ -128,7 +128,7 @@
             <pre>
                 CREATE VIEW megido AS
                 SELECT megido_name AS name, style, klass, gage, category,
-                ('&lt;strong&gt;'+skill_name+'&lt;/strong&gt;&lt;br/&gt;'+description) AS description
+                ('&lt;strong&gt;'+skill_name+'&lt;/strong&gt;&lt;br/&gt;'+description) AS description, link
                 FROM (SELECT * FROM megido_basic NATURAL INNER JOIN megido_skill)
                 WHERE category LIKE '%特性' or category LIKE '＋%' or category = '秘奥義';
             </pre>
@@ -137,7 +137,7 @@
             <pre>
                 CREATE VIEW orb AS
                 SELECT orb_name AS name, style, rarity, CT, category,
-                ('&lt;strong&gt;'+skill_name+'&lt;/strong&gt;&lt;br/&gt;'+description) AS description
+                ('&lt;strong&gt;'+skill_name+'&lt;/strong&gt;&lt;br/&gt;'+description) AS description, link
                 FROM (SELECT * FROM orb_basic NATURAL INNER JOIN orb_skill)
                 WHERE category LIKE '特性%' or category LIKE '技%';
             </pre>
@@ -145,8 +145,8 @@
             <p>ビュー megido_orb は以下のように定義されます。テーブルと同様に利用できます。</p>
             <pre>
                 CREATE VIEW megido_orb AS
-                SELECT style, '' as rarity, klass, name, gage, '' as ct, category, description FROM megido
-                UNION SELECT style, rarity, '' as klass, name, '' as gage, ct, category, description FROM orb;
+                SELECT style, '' as rarity, klass, name, gage, '' as ct, category, description, link FROM megido
+                UNION SELECT style, rarity, '' as klass, name, '' as gage, ct, category, description, link FROM orb;
             </pre>
         </details>
         <details>

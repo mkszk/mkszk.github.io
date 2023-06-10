@@ -47,21 +47,21 @@
         
         var query = ("CREATE VIEW megido AS "+
             "SELECT megido_name AS name, style, klass, gage, category, "+
-            "('<strong>'+skill_name+'</strong><br/>'+description) AS description "+
+            "('<strong>'+skill_name+'</strong><br/>'+description) AS description, link "+
             "FROM (SELECT * FROM megido_basic NATURAL INNER JOIN megido_skill) "+
             "WHERE category LIKE '%特性' or category LIKE '＋%' or category = '秘奥義'");
         alasql(query);
 
         var query = ("CREATE VIEW orb AS "+
             "SELECT orb_name AS name, style, rarity, CT, category, "+
-            "('<strong>'+skill_name+'</strong><br/>'+description) AS description "+
+            "('<strong>'+skill_name+'</strong><br/>'+description) AS description, link "+
             "FROM (SELECT * FROM orb_basic NATURAL INNER JOIN orb_skill) "+
             "WHERE category LIKE '特性%' or category LIKE '技%'");
         alasql(query);
 
         var query = ("CREATE VIEW megido_orb AS "+
-            "SELECT style, '' as rarity, klass, name, gage, '' as ct, category, description FROM megido "+
-            "UNION SELECT style, rarity, '' as klass, name, '' as gage, CT, category, description FROM orb");
+            "SELECT style, '' as rarity, klass, name, gage, '' as ct, category, description, link FROM megido "+
+            "UNION SELECT style, rarity, '' as klass, name, '' as gage, CT, category, description, link FROM orb");
         alasql(query);
             
         try {
