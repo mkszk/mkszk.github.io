@@ -432,10 +432,11 @@
 
         var query = ("SELECT data FROM megido_status "+
             "WHERE megido_name == ? AND category == ? AND evolution == '6'");
-        document.getElementById("health").value = alasql(query, [megido_name, "HP"])[0].data;
-        document.getElementById("attack").value = alasql(query, [megido_name, "攻撃力"])[0].data;
-        document.getElementById("defence").value = alasql(query, [megido_name, "防御力"])[0].data;
-        document.getElementById("dexterity").value = alasql(query, [megido_name, "素早さ"])[0].data;
+        document.getElementById("health1").value = alasql(query, [megido_name, "HP"])[0].data;
+        document.getElementById("attack1").value = alasql(query, [megido_name, "攻撃力"])[0].data;
+        document.getElementById("defence1").value = alasql(query, [megido_name, "防御力"])[0].data;
+        document.getElementById("dexterity1").value = alasql(query, [megido_name, "素早さ"])[0].data;
+        update1();
     }
     function initialize_status() {
         var template = document.getElementById("template_load_status");
@@ -474,6 +475,22 @@
         var res = alasql(query, [rush, counter, burst, size, rush, counter, burst, size]);
         return res;
     }
+    function update1() {
+        var health = parseInt(document.getElementById("health1").value);
+        var attack = parseInt(document.getElementById("attack1").value);
+        var defence = parseInt(document.getElementById("defence1").value);
+        var dexterity = parseInt(document.getElementById("dexterity1").value);
+        var total = attack * dexterity / 1000 + health * defence / 10000;
+        document.getElementById("total1").value = total;
+    }
+    function update2() {
+        var health = parseInt(document.getElementById("health2").value);
+        var attack = parseInt(document.getElementById("attack2").value);
+        var defence = parseInt(document.getElementById("defence2").value);
+        var dexterity = parseInt(document.getElementById("dexterity2").value);
+        var total = attack * dexterity / 1000 + health * defence / 10000;
+        document.getElementById("total2").value = total;
+    }
     function optimize() {
         var rush = 0;
         var counter = 0;
@@ -490,10 +507,10 @@
                 }
             }
         }
-        var health = parseInt(document.getElementById("health").value);
-        var attack = parseInt(document.getElementById("attack").value);
-        var defence = parseInt(document.getElementById("defence").value);
-        var dexterity = parseInt(document.getElementById("dexterity").value);
+        var health = parseInt(document.getElementById("health1").value);
+        var attack = parseInt(document.getElementById("attack1").value);
+        var defence = parseInt(document.getElementById("defence1").value);
+        var dexterity = parseInt(document.getElementById("dexterity1").value);
         var size_list = [];
         for (var i = 1; i <= 4; i++) {
             document.getElementsByName("size" + i).forEach(function(elm){
@@ -509,7 +526,7 @@
             candidate_list.push(find_pareto_front(rush, counter, burst, size_list[i]));
         }
 
-        var max_value = 0;
+        var max_total = 0;
         var max_index = undefined;
         var index_list = new Array(size_list.length);
         for (var i = 0; i < index_list.length; i++) {
@@ -530,13 +547,32 @@
                     temp_dexterity += entry.dexterity;
                 }
             }
-            var temp_value = temp_attack * temp_dexterity / 1000 + temp_health * temp_defence / 10000;
-            if (temp_value > max_value) {
-                max_value = temp_value;
+            var temp_total = temp_attack * temp_dexterity / 1000 + temp_health * temp_defence / 10000;
+            if (temp_total > max_total) {
+                max_total = temp_total;
                 max_index = [...index_list];
             }
 
             if (index_list.every(elm => {return elm == 0})) {
+                var health = parseInt(document.getElementById("health1").value);
+                var attack = parseInt(document.getElementById("attack1").value);
+                var defence = parseInt(document.getElementById("defence1").value);
+                var dexterity = parseInt(document.getElementById("dexterity1").value);
+                for (var i = 0; i < max_index.length; i++) {
+                    var entry = candidate_list[i][max_index[i]];
+                    if (entry) {
+                        health += entry.health;
+                        attack += entry.attack;
+                        defence += entry.defence;
+                        dexterity += entry.dexterity;
+                    }
+                }
+                document.getElementById("health2").value = health;
+                document.getElementById("attack2").value = attack;
+                document.getElementById("defence2").value = defence;
+                document.getElementById("dexterity2").value = dexterity;
+                update2();
+
                 var treasure_list = [...Array(max_index.length)].map(function (_, i) { return candidate_list[i][max_index[i]]; });
                 for (var i = 0; i < treasure_list.length; i++) {
                     if (i == 0) {
@@ -589,5 +625,7 @@
         initialize_status:initialize_status,
         load_status:load_status,
         optimize:optimize,
+        update1:update1,
+        update2:update2,
     }
 }));

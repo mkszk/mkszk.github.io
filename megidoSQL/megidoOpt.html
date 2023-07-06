@@ -37,16 +37,24 @@
         </p>
         <h2>ステータス</h2>
         <p>
-            HP　　<input type="number" id="health" value="10000">
+            HP <br/>
+            <input type="number" id="health1" value="10000" onchange="functions.update1()">
         </p>
         <p>
-            攻撃力<input type="number" id="attack" value="1000">
+            攻撃力 <br/>
+            <input type="number" id="attack1" value="1000" onchange="functions.update1()">
         </p>
         <p>
-            防御力<input type="number" id="defence" value="500">
+            防御力 <br/>
+            <input type="number" id="defence1" value="500" onchange="functions.update1()">
         </p>
         <p>
-            素早さ<input type="number" id="dexterity" value="500">
+            素早さ <br/>
+            <input type="number" id="dexterity1" value="500" onchange="functions.update1()">
+        </p>
+        <p>
+            攻撃力 × 素早さ ÷ 1000 + HP × 防御力 ÷ 10000 <br/>
+            <input type="number" id="total1" value="1000" readonly>
         </p>
         <h2>匣の大きさ</h2>
         <p>
@@ -76,5 +84,26 @@
             <thead id="thead"></thead>
             <tbody id="tbody"></tbody>
         </table>
+        <h2>ステータス</h2>
+        <p>
+            HP <br/>
+            <input type="number" id="health2" value="10000" onchange="functions.update2()">
+        </p>
+        <p>
+            攻撃力 <br/>
+            <input type="number" id="attack2" value="1000" onchange="functions.update2()">
+        </p>
+        <p>
+            防御力 <br/>
+            <input type="number" id="defence2" value="500" onchange="functions.update2()">
+        </p>
+        <p>
+            素早さ <br/>
+            <input type="number" id="dexterity2" value="500" onchange="functions.update2()">
+        </p>
+        <p>
+            攻撃力 × 素早さ ÷ 1000 + HP × 防御力 ÷ 10000 <br/>
+            <input type="number" id="total2" value="1000" readonly>
+        </p>
     </body>
 </html>
