@@ -481,7 +481,9 @@
         var defence = parseInt(document.getElementById("defence1").value);
         var dexterity = parseInt(document.getElementById("dexterity1").value);
         var total = attack * dexterity / 1000 + health * defence / 10000;
-        document.getElementById("total1").value = total;
+        
+        var ougi = parseInt(document.getElementById("ougi").value);
+        document.getElementById("total1").value = total * (1 + 0.05 * ougi) * 1.8 * 1.3;
     }
     function update2() {
         var health = parseInt(document.getElementById("health2").value);
@@ -489,7 +491,9 @@
         var defence = parseInt(document.getElementById("defence2").value);
         var dexterity = parseInt(document.getElementById("dexterity2").value);
         var total = attack * dexterity / 1000 + health * defence / 10000;
-        document.getElementById("total2").value = total;
+        
+        var ougi = parseInt(document.getElementById("ougi").value);
+        document.getElementById("total2").value = total * (1 + 0.05 * ougi) * 1.8 * 1.3;
     }
     function optimize() {
         var rush = 0;
@@ -511,15 +515,21 @@
         var attack = parseInt(document.getElementById("attack1").value);
         var defence = parseInt(document.getElementById("defence1").value);
         var dexterity = parseInt(document.getElementById("dexterity1").value);
-        var size_list = [];
-        for (var i = 1; i <= 4; i++) {
-            document.getElementsByName("size" + i).forEach(function(elm){
-                if (elm.checked) {
-                    size_list.push(parseInt(elm.value));
-                }
-            });
+        
+        var ougi = parseInt(document.getElementById("ougi").value);
+        if (ougi <= 3) {
+            var size_list = [3,2,1,1];
+        } else if (ougi <= 4) {
+            var size_list = [3,2,2,1];
+        } else if (ougi <= 5) {
+            var size_list = [3,3,2,1];
+        } else if (ougi <= 6) {
+            var size_list = [3,3,2,2];
+        } else if (ougi <= 7) {
+            var size_list = [3,3,3,2];
+        } else {
+            var size_list = [3,3,3,3];
         }
-        size_list.sort((a, b) => a - b);
 
         var candidate_list = [];
         for (var i = 0; i < size_list.length; i++) {
