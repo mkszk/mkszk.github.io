@@ -437,6 +437,7 @@
         document.getElementById("defence1").value = alasql(query, [megido_name, "防御力"])[0].data;
         document.getElementById("dexterity1").value = alasql(query, [megido_name, "素早さ"])[0].data;
         update1();
+        optimize();
     }
     function initialize_status() {
         var template = document.getElementById("template_load_status");
