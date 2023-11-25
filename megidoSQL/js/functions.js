@@ -512,11 +512,15 @@
                 }
             }
         }
-        var health = parseInt(document.getElementById("health1").value);
-        var attack = parseInt(document.getElementById("attack1").value);
-        var defence = parseInt(document.getElementById("defence1").value);
-        var dexterity = parseInt(document.getElementById("dexterity1").value);
-        
+
+        var data_basic = {
+            total:0,
+            health:parseInt(document.getElementById("health1").value),
+            attack:parseInt(document.getElementById("attack1").value),
+            defence:parseInt(document.getElementById("defence1").value),
+            dexterity:parseInt(document.getElementById("dexterity1").value),
+        };
+
         var ougi = parseInt(document.getElementById("ougi").value);
         if (ougi <= 3) {
             var size_list = [3,2,1,1];
@@ -537,94 +541,82 @@
             candidate_list.push(find_pareto_front(rush, counter, burst, size_list[i]));
         }
 
-        var max_total = 0;
-        var max_index = undefined;
-        var index_list = new Array(size_list.length);
-        for (var i = 0; i < index_list.length; i++) {
-            index_list[i] = candidate_list[i].length - 1;
+        function get_treasures(index) {
+            var treasures = [];
+            for (var j = 0; j < candidate_list.length; j++) {
+                treasures.push(candidate_list[j][index % candidate_list[j].length]);
+                index = Math.trunc(index / candidate_list[j].length);
+            }
+            return treasures;
         }
-        while (true) {
-            var temp_health = health;
-            var temp_attack = attack;
-            var temp_defence = defence;
-            var temp_dexterity = dexterity;
-            
-            for (var i = 0; i < index_list.length; i++) {
-                var entry = candidate_list[i][index_list[i]];
+        function evaluate_index(index) {
+            var health = data_basic.health;
+            var attack = data_basic.attack;
+            var defence = data_basic.defence;
+            var dexterity = data_basic.dexterity;
+            var treasures = get_treasures(index);
+            for (var j = 0; j < treasures.length; j++) {
+                var entry = treasures[j];
                 if (entry) {
-                    temp_health += entry.health;
-                    temp_attack += entry.attack;
-                    temp_defence += entry.defence;
-                    temp_dexterity += entry.dexterity;
+                    health += entry.health;
+                    attack += entry.attack;
+                    defence += entry.defence;
+                    dexterity += entry.dexterity;
                 }
             }
-            var temp_total = temp_attack * temp_dexterity / 1000 + temp_health * temp_defence / 10000;
-            if (temp_total > max_total) {
-                max_total = temp_total;
-                max_index = [...index_list];
-            }
-
-            if (index_list.every(elm => {return elm == 0})) {
-                var health = parseInt(document.getElementById("health1").value);
-                var attack = parseInt(document.getElementById("attack1").value);
-                var defence = parseInt(document.getElementById("defence1").value);
-                var dexterity = parseInt(document.getElementById("dexterity1").value);
-                for (var i = 0; i < max_index.length; i++) {
-                    var entry = candidate_list[i][max_index[i]];
-                    if (entry) {
-                        health += entry.health;
-                        attack += entry.attack;
-                        defence += entry.defence;
-                        dexterity += entry.dexterity;
-                    }
-                }
-                document.getElementById("health2").value = health;
-                document.getElementById("attack2").value = attack;
-                document.getElementById("defence2").value = defence;
-                document.getElementById("dexterity2").value = dexterity;
-                update2();
-
-                var treasure_list = [...Array(max_index.length)].map(function (_, i) { return candidate_list[i][max_index[i]]; });
-                for (var i = 0; i < treasure_list.length; i++) {
-                    if (i == 0) {
-                        var thead = document.getElementById("thead");
-                        thead.innerHTML = "";
-                        var tr = document.createElement("tr");
-                        for (var key in treasure_list[i]) {
-                            if (key in database.header) {
-                                key = database.header[key];
-                            }
-                            tr.innerHTML += "<th>" + key + "</th>";
-                        }
-                        thead.appendChild(tr);
-                    }
-                    var tbody = document.getElementById("tbody");
-                    if (i == 0) {
-                        tbody.innerHTML = "";
-                    }
-                    var tr = document.createElement("tr");
-                    for (var j in treasure_list[i]) {
-                        tr.innerHTML += "<td>" + treasure_list[i][j] + "</td>";
-                    }
-                    tbody.appendChild(tr);
-                }
-        
-                return treasure_list;
-            } else {
-                while (true) {
-                    index_list[0] -= 1;
-                    for (var i = 1; i < index_list.length; i++) {
-                        if (index_list[i-1] < 0) {
-                            index_list[i-1] = candidate_list[i].length - 1;
-                            index_list[i] -= 1;
-                        }
-                    }
-                    if ([...Array(index_list.length-1)].every(function (_, i) { return index_list[i] <= index_list[i + 1]; })) {
-                        break;
-                    }
-                }
+            total = attack * dexterity / 1000 + health * defence / 10000;
+            return {
+                total, health, attack, defence, dexterity
             }
         }
+
+        var index_max = 0;
+        var data_max = data_basic;
+        var index_end = candidate_list.reduce(
+            function (accum, curr) {return accum * curr.length},
+            1
+        );
+        for (var i = 0; i < index_end; i++) {
+            var data_temp = evaluate_index(i);
+            if (data_temp.total > data_max.total) {
+                data_max = data_temp;
+                index_max = i;
+            }
+        }
+        
+        document.getElementById("health2").value = data_max.health;
+        document.getElementById("attack2").value = data_max.attack;
+        document.getElementById("defence2").value = data_max.defence;
+        document.getElementById("dexterity2").value = data_max.dexterity;
+        update2();
+
+        var treasure_list = get_treasures(index_max);
+
+        for (var i = 0; i < treasure_list.length; i++) {
+            if (i == 0) {
+                var thead = document.getElementById("thead");
+                thead.innerHTML = "";
+                var tr = document.createElement("tr");
+                for (var key in treasure_list[i]) {
+                    if (key in database.header) {
+                        key = database.header[key];
+                    }
+                    tr.innerHTML += "<th>" + key + "</th>";
+                }
+                thead.appendChild(tr);
+            }
+            var tbody = document.getElementById("tbody");
+            if (i == 0) {
+                tbody.innerHTML = "";
+            }
+            var tr = document.createElement("tr");
+            for (var j in treasure_list[i]) {
+                tr.innerHTML += "<td>" + treasure_list[i][j] + "</td>";
+            }
+            tbody.appendChild(tr);
+        }
+        
+        return treasure_list;
     }
 
     return {
