@@ -481,20 +481,20 @@
         var attack = parseInt(document.getElementById("attack1").value);
         var defence = parseInt(document.getElementById("defence1").value);
         var dexterity = parseInt(document.getElementById("dexterity1").value);
-        var total = attack * dexterity / 1000 + health * defence / 10000;
+        var total = Math.trunc(attack * dexterity / 1000 + health * defence / 10000);
         
         var ougi = parseInt(document.getElementById("ougi").value);
-        document.getElementById("total1").value = total * (1 + 0.05 * ougi) * 1.8 * 1.3;
+        document.getElementById("total1").value = Math.trunc(total * (1 + 0.05 * ougi) * 1.8 * 1.3);
     }
     function update2() {
         var health = parseInt(document.getElementById("health2").value);
         var attack = parseInt(document.getElementById("attack2").value);
         var defence = parseInt(document.getElementById("defence2").value);
         var dexterity = parseInt(document.getElementById("dexterity2").value);
-        var total = attack * dexterity / 1000 + health * defence / 10000;
+        var total = Math.trunc(attack * dexterity / 1000 + health * defence / 10000);
         
         var ougi = parseInt(document.getElementById("ougi").value);
-        document.getElementById("total2").value = total * (1 + 0.05 * ougi) * 1.8 * 1.3;
+        document.getElementById("total2").value = Math.trunc(total * (1 + 0.05 * ougi) * 1.8 * 1.3);
     }
     function optimize() {
         var rush = 0;
