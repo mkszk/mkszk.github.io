@@ -376,7 +376,11 @@
 
         details.innerHTML += "<summary>状態異常耐性</summary>";
         for (var i in bad_status) {
-            details.appendChild(create_shortcut(bad_status[i] + "耐性", bad_status[i] + "耐性"));
+            if (bad_status[i] == "ノックバック" || bad_status[i] == "引き寄せ") {
+                details.appendChild(create_shortcut(bad_status[i] + "耐性", "ノックバック、引き寄せ耐性"));
+            } else {
+                details.appendChild(create_shortcut(bad_status[i] + "耐性", bad_status[i] + "耐性"));
+            }
         }
         details.appendChild(create_shortcut("全状態異常耐性", "全ての状態異常への耐性"));
         placeholder.appendChild(details);
